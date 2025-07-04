@@ -1,0 +1,14 @@
+<div class="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center mt-2">
+  <tournament-search-input
+    (value)="query.set($event)"
+    placeholder="Buscar torneo por nombre"
+    class="flex-1" />
+
+  <tournament-create-button />
+</div>
+
+<tournament-list
+  [tournaments]="tournamentResource.value() ?? []"
+  [isLoading]="tournamentResource.status() === 'loading' || tournamentResource.status() === 'reloading'"
+  [errorMessage]="tournamentResource.error()?.message"
+/>

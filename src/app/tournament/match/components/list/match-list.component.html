@@ -1,0 +1,60 @@
+<section class="p-6 bg-base-100 text-base-content">
+  <div class="max-w-4xl mx-auto space-y-6">
+    <h2 class="text-3xl font-bold mb-6 text-center">Partidos del Torneo</h2>
+
+    @for (match of matches(); track match.id) {
+    <div class="card bg-base-200 shadow-md">
+      <div class="card-body">
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+          <!-- Pareja 1 -->
+          <div class="flex-1 text-center sm:text-left" [class.font-bold]="match.pair1Score > match.pair2Score">
+            <p class="flex items-center justify-center sm:justify-start gap-2">
+              <span>{{ match.pair1.player1.name }} {{ match.pair1.player1.lastName }} <span class="text-primary">-</span>
+                    {{ match.pair1.player2.name }} {{ match.pair1.player2.lastName }}</span>
+              @if(match.pair1Score > match.pair2Score) {
+                <span class="text-green-500">✅</span>
+              }
+            </p>
+          </div>
+
+          <!-- Resultado -->
+          <div class="text-xl font-bold text-primary">
+            {{ match.pair1Score }} <span class="px-2">–</span> {{ match.pair2Score }}
+          </div>
+
+          <!-- Pareja 2 -->
+          <div class="flex-1 text-center sm:text-right" [class.font-bold]="match.pair2Score > match.pair1Score">
+            <p class="flex items-center justify-center sm:justify-end gap-2">
+              <span>{{ match.pair2.player1.name }} {{ match.pair2.player1.lastName }} <span class="text-primary">-</span>
+                    {{ match.pair2.player2.name }} {{ match.pair2.player2.lastName }}</span>
+              @if(match.pair2Score > match.pair1Score) {
+                <span class="text-green-500">✅</span>
+              }
+            </p>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap justify-between items-center mt-4 text-sm">
+          <span class="badge" [class.badge-success]="match.status === 'FINISHED'"
+            [class.badge-warning]="match.status === 'SCHEDULED'" [class.badge-info]="match.status === 'IN_PROGRESS'">
+            {{ match.status | titlecase }}
+          </span>
+          <span class="text-gray-500 italic">
+            {{ match.scheduledDate | date:'medium' }}
+          </span>
+        </div>
+      </div>
+    </div>
+    } @empty {
+    @if (isLoading()) {
+    <div class="text-center">
+      <span class="loading loading-spinner loading-lg text-primary"></span>
+    </div>
+    } @else if (errorMessage()) {
+    <p class="text-center text-error">Error al cargar los partidos.</p>
+    } @else {
+    <p class="text-center">No se encontraron partidos.</p>
+    }
+    }
+  </div>
+</section>

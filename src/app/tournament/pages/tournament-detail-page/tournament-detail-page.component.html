@@ -1,0 +1,20 @@
+@if (tournamentResource.error()) {
+  <app-not-found />
+}
+
+@if (tournamentResource.isLoading()) {
+  <div class="flex flex-col items-center mt-10 gap-2">
+    <span class="loading loading-spinner loading-lg text-primary"></span>
+    <p class="text-primary text-lg font-medium">Loading Tournament data...</p>
+  </div>
+}
+
+@if (tournamentResource.hasValue() && tournamentResource.value()) {
+  @if (isRootRoute()) {
+    <tournament-detail-information [tournament]="tournamentResource.value()!" />
+  } @else {
+    <router-outlet />
+  }
+}
+
+

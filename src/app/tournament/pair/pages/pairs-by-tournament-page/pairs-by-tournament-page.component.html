@@ -1,0 +1,5 @@
+<pair-list
+  [pairs]="pairResource.value() ?? []"
+  [isLoading]="pairResource.status() === 'loading' || pairResource.status() === 'reloading'"
+  [errorMessage]="pairResource.error()?.message"
+/>

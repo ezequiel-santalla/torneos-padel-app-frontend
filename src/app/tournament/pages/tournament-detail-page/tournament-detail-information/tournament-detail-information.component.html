@@ -1,0 +1,50 @@
+<section class="p-6 bg-base-100 rounded-lg shadow-md max-w-xl mx-auto mt-10 space-y-6 text-center">
+  <!-- Banner o imagen predeterminada -->
+  <div class="flex justify-center">
+    <img src="/padel-match.webp" [alt]="tournament().name + ' banner'"
+      class="w-full h-48 object-cover rounded shadow" />
+  </div>
+
+  <!-- Nombre y fechas -->
+  <div class="space-y-1">
+    <h1 class="text-3xl font-bold">{{ tournament().name }}</h1>
+    <p class="text-gray-500 italic">
+      {{ tournament().startDate | date:'yyyy-MM-dd' }} - {{ tournament().endDate | date:'yyyy-MM-dd' }}
+    </p>
+  </div>
+
+  <!-- Detalles -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left text-lg mb-16">
+    <p>
+      <span class="font-semibold">Tipo:</span> {{ tournament().type | titlecase }}
+    </p>
+    <p>
+      <span class="font-semibold">Regla de victoria:</span> {{ tournament().winningMatchRule }}
+    </p>
+    <p>
+      <span class="font-semibold">Fecha de inicio:</span> {{ tournament().startDate | date:'fullDate' }}
+    </p>
+    <p>
+      <span class="font-semibold">Fecha de finalización:</span> {{ tournament().endDate | date:'fullDate' }}
+    </p>
+    <p>
+      <span class="font-semibold">Estado: </span>
+      <span class="badge" [class.badge-success]="tournament().status === 'IN_PROGRESS'"
+        [class.badge-warning]="tournament().status === 'UPCOMING'"
+        [class.badge-neutral]="tournament().status === 'FINISHED'">
+        {{ tournament().status | titlecase }}
+      </span>
+    </p>
+  </div>
+
+  <div class="flex justify-center gap-4">
+    <button [routerLink]="['/tournaments', tournament().id, 'pairs']" class="btn btn-primary" type="button">
+      Ver parejas
+    </button>
+
+
+    <button [routerLink]="['/tournaments', tournament().id, 'matches']" class="btn btn-secondary" type="button">
+      Ver partidos
+    </button>
+  </div>
+</section>

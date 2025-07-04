@@ -1,0 +1,5 @@
+<match-list
+  [matches]="matchResource.value() ?? []"
+  [isLoading]="matchResource.status() === 'loading' || matchResource.status() === 'reloading'"
+  [errorMessage]="matchResource.error()?.message"
+/>
