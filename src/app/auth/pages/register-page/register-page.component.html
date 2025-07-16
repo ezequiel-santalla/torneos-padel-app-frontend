@@ -1,0 +1,175 @@
+<section class="container mx-auto px-4 py-4">
+  <div class="max-w-2xl mx-auto">
+    <!-- Header -->
+    <div class="text-center mb-6">
+      <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br rounded-full mb-4">
+        <user-icon />
+      </div>
+      <h1 class="text-3xl font-bold text-base-content mb-2">Registro de Usuario</h1>
+      <p class="text-base-content/70">Completa tus datos para crear tu cuenta</p>
+    </div>
+
+    <!-- Form Card -->
+    <div class="card bg-base-100 shadow-2xl">
+      <div class="card-body">
+        <form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="space-y-6">
+
+          <!-- Nombre y Apellido -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-semibold">Nombre</span>
+              </label>
+              <input type="text" placeholder="Ej: Juan" formControlName="name"
+                class="my-1 input input-bordered input-accent w-full focus:accent-accent transition-all duration-300 placeholder-gray-400 placeholder:italic"
+                required />
+
+              @if ( formUtils.isValidField(myForm, 'name') ) {
+              <span class="form-text text-warning">
+                {{ formUtils.getTextError(myForm, 'name') }}
+              </span>
+              }
+            </div>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-semibold">Apellido</span>
+              </label>
+              <input type="text" placeholder="Ej: Pérez" formControlName="lastName"
+                class="my-1 input input-bordered input-accent w-full focus:accent-accent transition-all duration-300 placeholder-gray-400 placeholder:italic"
+                required />
+
+              @if ( formUtils.isValidField(myForm, 'lastName') ) {
+              <span class="form-text text-warning">
+                {{ formUtils.getTextError(myForm, 'lastName') }}
+              </span>
+              }
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold">Email</span>
+            </label>
+            <label
+              class="input input-bordered input-accent w-full focus:accent-accent transition-all duration-300 flex items-center gap-2 my-1">
+              <mail-icon />
+              <input type="email" placeholder="Ej: juan.perez@example.com" formControlName="email"
+                class="grow placeholder-gray-400 placeholder:italic" required />
+            </label>
+
+            @if ( formUtils.isValidField(myForm, 'email') ) {
+            <span class="form-text text-warning">
+              {{ formUtils.getTextError(myForm, 'email') }}
+            </span>
+            }
+          </div>
+
+          <!-- DNI y Teléfono -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-semibold">DNI</span>
+              </label>
+              <label
+                class="input input-bordered input-accent w-full focus:accent-accent transition-all duration-300 flex items-center gap-2 my-1">
+                <document-icon />
+                <input type="text" placeholder="Ej: 12345678" formControlName="dni"
+                  class="grow placeholder-gray-400 placeholder:italic" required />
+              </label>
+
+              @if ( formUtils.isValidField(myForm, 'dni') ) {
+              <span class="form-text text-warning">
+                {{ formUtils.getTextError(myForm, 'dni') }}
+              </span>
+              }
+            </div>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-semibold">Teléfono</span>
+              </label>
+              <label
+                class="input input-bordered input-accent w-full focus:accent-accent transition-all duration-300 flex items-center gap-2 my-1">
+                <phone-icon />
+                <input type="tel" placeholder="Ej: +54 9 11 1234-5678" formControlName="phone"
+                  class="grow placeholder-gray-400 placeholder:italic" required />
+              </label>
+
+              @if ( formUtils.isValidField(myForm, 'phone') ) {
+              <span class="form-text text-warning">
+                {{ formUtils.getTextError(myForm, 'phone') }}
+              </span>
+              }
+            </div>
+          </div>
+
+          <!-- Contraseña y Confirmación -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-semibold">Contraseña</span>
+              </label>
+              <label
+                class="input input-bordered input-accent w-full focus:accent-accent transition-all duration-300 flex items-center gap-2 my-1">
+                <password-icon />
+                <input type="password" placeholder="Mínimo 6 caracteres" formControlName="password"
+                  class="grow placeholder-gray-400 placeholder:italic" required />
+              </label>
+
+              @if ( formUtils.isValidField(myForm, 'password') ) {
+              <span class="form-text text-warning">
+                {{ formUtils.getTextError(myForm, 'password') }}
+              </span>
+              }
+            </div>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-semibold">Confirmar Contraseña</span>
+              </label>
+              <label
+                class="input input-bordered input-accent w-full focus:accent-accent transition-all duration-300 flex items-center gap-2 my-1">
+                <password-icon />
+                <input type="password" placeholder="Repite la contraseña" formControlName="confirmPassword"
+                  class="grow placeholder-gray-400 placeholder:italic" required />
+              </label>
+
+              @if ( formUtils.isValidField(myForm, 'confirmPassword') ) {
+              <span class="form-text text-warning">
+                {{ formUtils.getTextError(myForm, 'confirmPassword') }}
+              </span>
+              }
+            </div>
+          </div>
+
+          <!-- Error de contraseñas no iguales -->
+          @if ( myForm.errors?.['passwordsNotEqual'] && myForm.get('confirmPassword')?.touched ) {
+          <div class="form-control">
+            <span class="form-text text-warning flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.728-.833-2.498 0L4.316 18.5c-.77.833.192 2.5 1.732 2.5z" />
+              </svg>
+              Las contraseñas deben ser iguales
+            </span>
+          </div>
+          }
+
+          <!-- Botones -->
+          <div class="flex flex-col sm:flex-row gap-4 pt-6">
+            <button type="submit"
+              class="btn btn-primary bg-gradient-to-r border-none text-white flex-1 hover:scale-105 transition-all duration-300 shadow-lg">
+              <add-user-icon />
+              Crear Cuenta
+            </button>
+            <button type="button" (click)="onCancel()"
+              class="btn btn-outline btn-secondary flex-1 hover:scale-105 transition-all duration-300">
+              <reset-icon />
+              Limpiar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

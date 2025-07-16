@@ -1,0 +1,54 @@
+<!-- Versión super compacta -->
+@if (isOpen()) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center p-4
+              bg-black/25 backdrop-blur-sm
+              animate-in fade-in-0 duration-200">
+
+    <div class="bg-white rounded-lg shadow-xl w-80
+                animate-in zoom-in-95 duration-200 ease-out">
+
+      <!-- Content -->
+      <div class="p-6 text-center">
+        <div class="w-12 h-12 bg-gray-500 rounded-full flex items-center justify-center mx-auto mb-3">
+          <svg class="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M9 12a1 1 0 002 0V8a1 1 0 00-2 0v4zm1-7a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd" />
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+          </svg>
+        </div>
+
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">Eliminar torneo</h3>
+        <p class="text-gray-600 text-sm mb-5">
+          ¿Eliminar <span class="font-medium">"{{ tournamentToDelete()?.name }}"</span>?
+        </p>
+
+        <!-- Actions -->
+        <div class="flex gap-3">
+          <button
+            class="flex-1 px-3 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded
+                   hover:bg-gray-200 transition-colors duration-150
+                   disabled:opacity-50"
+            (click)="onCancel()"
+            [disabled]="isDeleting()">
+            Cancelar
+          </button>
+
+          <button
+            class="flex-1 px-3 py-2 text-sm font-medium text-white bg-red-600 rounded
+                   hover:bg-red-700 transition-colors duration-150
+                   disabled:opacity-50 flex items-center justify-center gap-1"
+            (click)="onConfirm()"
+            [disabled]="isDeleting()">
+
+            @if (isDeleting()) {
+              <svg class="w-3 h-3 animate-spin" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+            }
+            {{ isDeleting() ? 'Eliminando...' : 'Eliminar' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}

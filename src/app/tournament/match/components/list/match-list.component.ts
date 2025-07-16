@@ -1,15 +1,17 @@
 import { Component, computed, input } from '@angular/core';
 import { Match } from '../../interfaces/match.interface';
 import { DatePipe, TitleCasePipe } from '@angular/common';
+import { EnumLabelPipe } from '../../../pipes/enum-label.pipe';
 
 @Component({
   selector: 'match-list',
   standalone: true,
-  imports: [DatePipe, TitleCasePipe],
+  imports: [DatePipe, EnumLabelPipe],
   templateUrl: './match-list.component.html',
 })
 export class MatchListComponent {
   matches = input.required<Match[]>();
+
   errorMessage = input<string | null>();
   isLoading = input<boolean>(false);
 

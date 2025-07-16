@@ -1,0 +1,7 @@
+<standing-list
+  [isTournamentFinished]="isTournamentFinished()"
+  [progress]="progressResource.value()!"
+  [standings]="standingResource.value() ?? []"
+  [isLoading]="standingResource.status() === 'loading' || standingResource.status() === 'reloading'"
+  [errorMessage]="standingResource.error()?.message"
+/>

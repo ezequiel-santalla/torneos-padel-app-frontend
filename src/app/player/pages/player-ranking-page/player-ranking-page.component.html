@@ -1,0 +1,20 @@
+<div class="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center mt-2">
+  <drop-down enumName="gender-types" [selectedValue]="selectedGender()" placeholder="Seleccionar género"
+    (valueChange)="onGenderChange($event)" />
+
+  <drop-down enumName="category-types" [selectedValue]="selectedCategory()" placeholder="Seleccionar categoría"
+    (valueChange)="onCategoryChange($event)" />
+
+  <div class="flex gap-2">
+    <button class="btn btn-outline btn-secondary"
+      [disabled]="playerRankingResource.status() === 'loading' || playerRankingResource.status() === 'reloading'"
+      (click)="clearFilters()">
+      Limpiar
+    </button>
+  </div>
+</div>
+
+<ranking-list
+  [players]="playerRankingResource.value() ?? []"
+  [isLoading]="playerRankingResource.status() === 'loading' || playerRankingResource.status() === 'reloading'"
+  [errorMessage]="playerRankingResource.error()?.message" />

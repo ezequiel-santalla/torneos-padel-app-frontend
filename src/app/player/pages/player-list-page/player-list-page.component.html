@@ -1,0 +1,13 @@
+<div class="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center mt-2">
+  <search-input (value)="query.set($event)" placeholder="Buscar jugador por nombre" class="flex-1" />
+
+  <button [routerLink]="['/players/create']" class="btn btn-primary">
+    <plus-icon />
+    Agregar Jugador
+  </button>
+</div>
+
+<player-list [players]="playerResource.value() ?? []"
+  [isLoading]="playerResource.status() === 'loading' || playerResource.status() === 'reloading'"
+  [errorMessage]="playerResource.error()?.message"
+  (deletePlayer)="deletePlayer($event)" />

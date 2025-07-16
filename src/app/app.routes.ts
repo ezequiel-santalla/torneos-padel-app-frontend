@@ -11,6 +11,18 @@ export const routes: Routes = [
     loadChildren: () => import('./tournament/tournament.routes').then(m => m.tournamentRoutes)
   },
   {
+    path: 'players',
+    loadChildren: () => import('./player/player.routes').then(m => m.playerRoutes)
+  },
+  {
+    path: 'player-standings',
+    loadChildren: () => import('./player/player-standings.routes').then(m => m.playerStandingRoutes)
+  },
+  {
+    path: 'auth',
+    loadChildren: () => import('./auth/auth.routes').then(m => m.authRoutes)
+  },
+  {
     path: '**',
     redirectTo: ''
   }

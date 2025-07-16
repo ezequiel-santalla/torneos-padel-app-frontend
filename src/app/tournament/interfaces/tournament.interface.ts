@@ -1,3 +1,4 @@
+import { EnumOption } from "../../enum/interfaces/enum.interface";
 import { Pair } from "../pair/interfaces/pair.interface";
 
 export interface Tournament {
@@ -5,8 +6,12 @@ export interface Tournament {
   name:             string;
   startDate:        Date;
   endDate:          Date;
-  type:             string;
-  status:           string;
-  winningMatchRule: string;
+  address:          string;
+  tournamentType:   EnumOption;
+  categoryType:     EnumOption;
+  genderType:       EnumOption;
+  status:           EnumOption;
+  winningMatchRule: EnumOption;
   pairs:            Pair[];
 }
+

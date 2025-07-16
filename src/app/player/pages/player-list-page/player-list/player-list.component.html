@@ -1,0 +1,70 @@
+<section class="p-6 bg-base-100 text-base-content">
+  <div class="max-w-7xl mx-auto">
+    <h2 class="text-3xl font-bold mb-6 text-center">Todos los Jugadores</h2>
+
+    <div class="overflow-x-auto">
+      <table class="table table-zebra w-full">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Género</th>
+            <th>DNI</th>
+            <th>Teléfono</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (player of players(); track player.id; let i = $index) {
+          <tr>
+            <th>{{ i + 1 }}</th>
+            <td>{{ player.name }}</td>
+            <td>{{ player.lastName }}</td>
+            <td>{{ player.genderType | enumLabel:'gender' }}</td>
+            <td>{{ player.dni }}</td>
+            <td>{{ player.phoneNumber }}</td>
+            <td class="flex gap-2">
+              <button [routerLink]="['/player-standings', player.id]" class="btn btn-sm btn-info">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+                Estad.
+              </button>
+              <button [routerLink]="['/players', player.id, 'edit']" class="btn btn-sm btn-warning">Editar</button>
+              <button
+                  class="btn btn-sm btn-error"
+                  (click)="onDeletePlayer(player.id)"
+                  [disabled]="isLoading()">
+                  Eliminar
+                </button>
+            </td>
+          </tr>
+          } @empty {
+          @if (isLoading()) {
+          <tr>
+            <td colspan="6" class="text-center">
+              <span class="loading loading-spinner loading-lg text-primary">Cargando...</span>
+            </td>
+          </tr>
+          } @else if (errorMessage()) {
+          <tr>
+            <td colspan="6" class="text-center text-error">
+              Error al cargar los jugadores.
+            </td>
+          </tr>
+          } @else {
+          <tr>
+            <td colspan="6" class="text-center">
+              No se encontraron jugadores.
+            </td>
+          </tr>
+          }
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

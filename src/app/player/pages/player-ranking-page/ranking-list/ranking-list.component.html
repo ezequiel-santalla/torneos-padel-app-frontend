@@ -1,0 +1,106 @@
+<section class="p-6 bg-base-100 text-base-content">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="text-3xl font-bold mb-6 text-center">Ranking de Jugadores</h2>
+
+    <div class="overflow-x-auto">
+      <table class="table table-zebra w-full">
+        <thead>
+          <tr>
+            <th>Posición</th>
+            <th>Jugador</th>
+            <th>Puntos Totales</th>
+            <th>Torneos Jugados</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (player of players(); track player.id; let i = $index) {
+          <tr>
+            <td>
+              <div class="flex items-center gap-4">
+                <span class="text-lg font-bold">{{ i + 1 }}</span>
+                @if (i === 0) {
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" fill="currentColor"
+                  viewBox="0 0 24 24">
+                  <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+                } @else if (i === 1) {
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400" fill="currentColor"
+                  viewBox="0 0 24 24">
+                  <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+                } @else if (i === 2) {
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-600" fill="currentColor"
+                  viewBox="0 0 24 24">
+                  <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+                }
+              </div>
+            </td>
+            <td>
+              <div class="flex items-center gap-3">
+                <div class="avatar placeholder">
+                  <div class="bg-white text-neutral-content w-10 rounded-full">
+                    @if (player.genderType === 'MASCULINE') {
+                    <img src="/avatar-man-face.png" [alt]="player.name + ' ' + player.lastName" />
+                    } @else {
+                    <img src="/avatar-woman-face.png" [alt]="player.name + ' ' + player.lastName" />
+                    }
+                  </div>
+                </div>
+                <div>
+                  <div class="font-bold">{{ player.name }} {{ player.lastName }}</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="flex items-center gap-2">
+                <span class="text-2xl font-bold text-primary">{{ player.totalPoints }}</span>
+                <span class="text-sm text-base-content/70">pts</span>
+              </div>
+            </td>
+            <td>
+              <div class="flex items-center gap-2">
+                <span class="text-2xl font-bold text-primary">{{ player.tournamentsPlayed }}</span>
+              </div>
+            </td>
+            <td class="flex gap-2">
+              <button [routerLink]="['/player-standings', player.id]" class="btn btn-sm btn-success">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+                Estadísticas
+              </button>
+            </td>
+          </tr>
+          } @empty {
+          @if (isLoading()) {
+          <tr>
+            <td colspan="4" class="text-center">
+              <span class="loading loading-spinner loading-lg text-primary">Cargando...</span>
+            </td>
+          </tr>
+          } @else if (errorMessage()) {
+          <tr>
+            <td colspan="4" class="text-center text-error">
+              Error al cargar el ranking.
+            </td>
+          </tr>
+          } @else {
+          <tr>
+            <td colspan="4" class="text-center">
+              No hay jugadores en el ranking.
+            </td>
+          </tr>
+          }
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

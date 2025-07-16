@@ -1,0 +1,201 @@
+<section class="container mx-auto px-4 py-4">
+  <div class="max-w-2xl mx-auto">
+    <!-- Header -->
+    <div class="text-center mb-6">
+      <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br rounded-full mb-4">
+        <clock-icon />
+      </div>
+      <h1 class="text-3xl font-bold text-base-content mb-2">{{ pageTitle }}</h1>
+      <p class="text-base-content/70">{{ pageSubtitle }}</p>
+    </div>
+
+    <!-- Form Card -->
+    <div class="card bg-base-100 shadow-2xl">
+      <div class="card-body">
+        <form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="space-y-6">
+
+          <!-- Nombre del torneo -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold">Nombre del Torneo</span>
+            </label>
+            <input type="text" placeholder="Ej: Padel Match Julio 2025 Cuadrangular 7ma" formControlName="name"
+              class="my-1 input input-bordered input-accent w-full focus:accent-accent transition-all duration-300 placeholder-gray-400 placeholder:italic"
+              required />
+
+            @if ( formUtils.isValidField(myForm, 'name') ) {
+            <span class="form-text text-warning">
+              {{ formUtils.getTextError(myForm, 'name') }}
+            </span>
+            }
+          </div>
+
+          <!-- Fechas y horarios -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-semibold">Fecha y Hora de Inicio</span>
+              </label>
+              <input type="datetime-local" formControlName="startDate"
+                class="my-1 input input-bordered input-accent w-full focus:accent-accent transition-all duration-300"
+                required />
+
+              @if ( formUtils.isValidField(myForm, 'startDate') ) {
+              <span class="form-text text-warning">
+                {{ formUtils.getTextError(myForm, 'startDate') }}
+              </span>
+              }
+            </div>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-semibold">Fecha y Hora de Fin</span>
+              </label>
+              <input type="datetime-local" formControlName="endDate"
+                class="my-1 input input-bordered input-accent w-full focus:accent-accent transition-all duration-300"
+                required />
+
+              @if ( formUtils.isValidField(myForm, 'endDate') ) {
+              <span class="form-text text-warning">
+                {{ formUtils.getTextError(myForm, 'endDate') }}
+              </span>
+              }
+            </div>
+          </div>
+
+          <!-- Dirección -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold">Dirección</span>
+            </label>
+            <input type="text" placeholder="Ej: San Juan 1660" formControlName="address"
+              class="my-1 input input-bordered input-accent w-full focus:accent-accent transition-all duration-300 placeholder-gray-400 placeholder:italic"
+              required />
+
+            @if ( formUtils.isValidField(myForm, 'address') ) {
+            <span class="form-text text-warning">
+              {{ formUtils.getTextError(myForm, 'address') }}
+            </span>
+            }
+          </div>
+
+          <!-- Reglas y configuración -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-semibold">Regla de Victoria</span>
+              </label>
+              <select formControlName="winningMatchRule"
+                class="my-1 select select-bordered select-accent w-full focus:accent-accent transition-all duration-300"
+                required>
+                <option value="">-- Selecciona una regla --</option>
+                @if (isLoadingEnums) {
+                <option disabled>Cargando...</option>
+                } @else {
+                @for (option of winningMatchRuleOptions; track option.value) {
+                <option [value]="option.value">{{ option | enumLabel:'winningMatchRule' }}</option>
+                }
+                }
+              </select>
+
+              @if ( formUtils.isValidField(myForm, 'winningMatchRule') ) {
+              <span class="form-text text-warning">
+                {{ formUtils.getTextError(myForm, 'winningMatchRule') }}
+              </span>
+              }
+            </div>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-semibold">Tipo de Torneo</span>
+              </label>
+              <select formControlName="tournamentType"
+                class="my-1 select select-bordered select-accent w-full focus:accent-accent transition-all duration-300"
+                required>
+                <option value="">-- Selecciona el tipo --</option>
+                @if (isLoadingEnums) {
+                <option disabled>Cargando...</option>
+                } @else {
+                @for (option of tournamentTypeOptions; track option.value) {
+                <option [value]="option.value">{{ option | enumLabel:'tournamentType' }}</option>
+                }
+                }
+              </select>
+
+              @if ( formUtils.isValidField(myForm, 'tournamentType') ) {
+              <span class="form-text text-warning">
+                {{ formUtils.getTextError(myForm, 'tournamentType') }}
+              </span>
+              }
+            </div>
+          </div>
+
+          <!-- Categoría y género -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-semibold">Categoría</span>
+              </label>
+              <select formControlName="categoryType"
+                class="my-1 select select-bordered select-accent w-full focus:accent-accent transition-all duration-300"
+                required>
+                <option value="">-- Selecciona una categoría --</option>
+                @if (isLoadingEnums) {
+                <option disabled>Cargando...</option>
+                } @else {
+                @for (option of categoryOptions; track option.value) {
+                <option [value]="option.value">{{ option | enumLabel:'category' }}</option>
+                }
+                }
+              </select>
+
+              @if ( formUtils.isValidField(myForm, 'categoryType') ) {
+              <span class="form-text text-warning">
+                {{ formUtils.getTextError(myForm, 'categoryType') }}
+              </span>
+              }
+            </div>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-semibold">Género</span>
+              </label>
+              <select formControlName="genderType"
+                class="my-1 select select-bordered select-accent w-full focus:accent-accent transition-all duration-300"
+                required>
+                <option value="">-- Selecciona el género --</option>
+                @if (isLoadingEnums) {
+                <option disabled>Cargando...</option>
+                } @else {
+                @for (option of genderOptions; track option.value) {
+                <option [value]="option.value">{{ option | enumLabel:'gender' }}</option>
+                }
+                }
+              </select>
+
+              @if ( formUtils.isValidField(myForm, 'genderType') ) {
+              <span class="form-text text-warning">
+                {{ formUtils.getTextError(myForm, 'genderType') }}
+              </span>
+              }
+            </div>
+          </div>
+
+          <!-- Botones -->
+          <div class="flex flex-col sm:flex-row gap-4 pt-6">
+            <button type="submit" (click)="onSubmit()" [disabled]="isSubmitting || isLoadingEnums"
+              class="btn btn-primary bg-gradient-to-r border-none text-white flex-1 hover:scale-105 transition-all duration-300 shadow-lg">
+              <confirm-icon />
+              @if (isSubmitting) {
+              <span class="loading loading-spinner loading-sm"></span>
+              }
+              {{ submitButtonText }}
+            </button>
+            <button type="button" (click)="onCancel()" [disabled]="isSubmitting"
+              class="btn btn-outline btn-secondary flex-1 hover:scale-105 transition-all duration-300">
+              <reset-icon />
+              {{ cancelButtonText }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

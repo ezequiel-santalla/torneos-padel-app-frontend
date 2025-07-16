@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { PairService } from '../../services/pair.service';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { PairListComponent } from "../../components/list/pair-list.component";
+import { PairListComponent } from './list/pair-list.component';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 

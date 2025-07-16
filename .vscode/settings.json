@@ -3,6 +3,9 @@
         "angular-*": {
             "externalTemplate": true,
             "skipStyle": true
+        },
+        "angular-component": {
+            "skipChangeDetectionOnPush": true
         }
     }
 }

@@ -37,7 +37,7 @@
         <div class="flex flex-wrap justify-between items-center mt-4 text-sm">
           <span class="badge" [class.badge-success]="match.status === 'FINISHED'"
             [class.badge-warning]="match.status === 'SCHEDULED'" [class.badge-info]="match.status === 'IN_PROGRESS'">
-            {{ match.status | titlecase }}
+            {{ match.status | enumLabel:'matchStatus' }}
           </span>
           <span class="text-gray-500 italic">
             {{ match.scheduledDate | date:'medium' }}

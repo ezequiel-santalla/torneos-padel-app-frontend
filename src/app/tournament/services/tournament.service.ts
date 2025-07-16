@@ -23,11 +23,11 @@ export class TournamentService {
     return this.http.post<Tournament>(TOURNAMENT_URLS.TOURNAMENTS, tournament);
   }
 
-  update(id: number, tournament: Tournament): Observable<Tournament> {
+  update(id: string, tournament: Tournament): Observable<Tournament> {
     return this.http.put<Tournament>(`${TOURNAMENT_URLS.TOURNAMENTS}/${id}`, tournament);
   }
 
-  delete(id: number): Observable<void> {
+  delete(id: string): Observable<void> {
     return this.http.delete<void>(`${TOURNAMENT_URLS.TOURNAMENTS}/${id}`);
   }
 }

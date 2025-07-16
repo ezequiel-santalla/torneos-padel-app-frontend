@@ -1,0 +1,75 @@
+<div class="dropdown" [class.dropdown-open]="isOpen()">
+  <!-- Botón principal del dropdown -->
+  <div tabindex="0" role="button"
+    class="btn btn-outline btn-primary w-full justify-between hover:btn-primary hover:text-primary-content transition-all duration-300 group min-w-0"
+    [class.btn-disabled]="disabled()" (click)="toggleDropdown()" (blur)="closeDropdown()" style="min-width: 250px;">
+
+    <!-- Contenedor del texto seleccionado -->
+    <div class="flex items-center min-w-0 flex-1">
+      <span class="truncate text-left" [class.text-base-content]="!selectedValue()"
+        [class.text-base-content]="selectedValue()">
+        {{ selectedValue() ? ((selectedLabel() || selectedValue()) | enumLabel:enumName()) : getPlaceholderText() }}
+      </span>
+    </div>
+
+    <!-- Icono de flecha con animación -->
+    <svg class="w-5 h-5 transition-all duration-300 flex-shrink-0 ml-2" [class.rotate-180]="isOpen()"
+      [class.text-primary]="isOpen()" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+    </svg>
+  </div>
+
+  <!-- Contenido del dropdown -->
+  <ul
+    class="dropdown-content z-[1000] menu p-2 shadow-lg bg-base-100 rounded-box w-full max-h-80 overflow-y-auto overflow-x-hidden border border-base-300 mt-1"
+    (click)="$event.stopPropagation()" style="min-width: 100%; width: 100%; max-width: none;">
+
+    <!-- Estado de carga -->
+    @if (loading()) {
+    <li>
+      <div class="flex items-center justify-center py-4">
+        <span class="loading loading-spinner loading-sm text-primary"></span>
+        <span class="ml-2 text-base-content/70">Cargando...</span>
+      </div>
+    </li>
+    } @else {
+
+    <!-- Opciones del dropdown -->
+    @for (option of options(); track option.value) {
+    <li>
+      <button
+        class="justify-start transition-all duration-200 rounded-lg hover:bg-primary/10 hover:text-primary w-full text-left"
+        [class.active]="selectedValue() === option.value" [class.bg-primary]="selectedValue() === option.value"
+        [class.text-primary-content]="selectedValue() === option.value"
+        [class.font-medium]="selectedValue() === option.value" (click)="selectOption(option); closeDropdown()">
+
+        <div class="flex items-center w-full min-w-0">
+          <!-- Icono de selección -->
+          @if (selectedValue() === option.value) {
+          <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+          }
+
+          <span class="truncate flex-1 text-left pr-2">{{ option.value | enumLabel:enumName() }}</span>
+        </div>
+      </button>
+    </li>
+    }
+
+    <!-- Mensaje cuando no hay opciones -->
+    @if (options().length === 0) {
+    <li>
+      <div class="flex items-center justify-center py-4">
+        <svg class="w-5 h-5 text-base-content/50 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2 2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4">
+          </path>
+        </svg>
+        <span class="text-base-content/70 italic">No hay opciones disponibles</span>
+      </div>
+    </li>
+    }
+    }
+  </ul>
+</div>

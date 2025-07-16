@@ -1,0 +1,184 @@
+<section class="p-6 bg-base-100 text-base-content">
+  <div class="max-w-6xl mx-auto space-y-6">
+    <h2 class="text-3xl font-bold mb-6 text-center">Clasificaciones del Torneo</h2>
+
+    <!-- Información del torneo mejorada -->
+    <div
+      class="card bg-gradient-to-br from-base-200 to-base-300 shadow-xl border border-base-300 hover:shadow-2xl transition-all duration-300">
+      <div class="card-body p-8">
+        <!-- Título del card -->
+        <div class="card-title text-2xl font-bold text-primary mb-6 flex items-center gap-2">
+          <chart-icon />
+          Información del Torneo
+        </div>
+
+        <!-- Grid de estadísticas -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <!-- Partidos Totales -->
+          <div
+            class="stat bg-base-100 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-200 border border-base-300">
+            <div class="stat-figure text-primary">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 9a2 2 0 00-2 2v2a2 2 0 002 2m0 0h14m-14 0a2 2 0 002 2v2a2 2 0 01-2 2">
+                </path>
+              </svg>
+            </div>
+            <div class="stat-title text-base-content/70">Partidos Totales</div>
+            <div class="stat-value text-2xl text-primary font-bold">{{ progress()?.totalMatches }}</div>
+          </div>
+
+          <!-- Completados -->
+          <div
+            class="stat bg-base-100 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-200 border border-base-300">
+            <div class="stat-figure text-success">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <div class="stat-title text-base-content/70">Completados</div>
+            <div class="stat-value text-2xl text-success font-bold">{{ safeProgress().completedMatches }}</div>
+          </div>
+
+          <!-- Estado -->
+          <div
+            class="stat bg-base-100 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-200 border border-base-300">
+            <div class="stat-figure text-info">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <div class="stat-title text-base-content/70">Estado</div>
+            <div class="stat-value text-lg">
+              <span class="badge badge-info badge-lg font-semibold">
+                {{ safeProgress().status | enumLabel:'tournamentStatus' }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Porcentaje -->
+          <div
+            class="stat bg-base-100 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-200 border border-base-300">
+            <div class="stat-figure text-warning">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                </path>
+              </svg>
+            </div>
+            <div class="stat-title text-base-content/70">Progreso</div>
+            <div class="stat-value text-2xl text-warning font-bold">
+              {{ (safeProgress().completionPercentage) / 100 | percent }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Barra de progreso mejorada -->
+        <div class="space-y-4">
+          <div class="flex justify-between items-center">
+            <span class="text-sm font-medium text-base-content">Progreso del Torneo</span>
+            <span class="text-sm font-semibold text-primary">
+              {{ safeProgress().completedMatches }} / {{ progress()?.totalMatches }}
+            </span>
+          </div>
+
+          <div class="relative">
+            <progress class="progress progress-primary w-full h-4 shadow-inner"
+              [value]="progress()?.completionPercentage" max="100">
+            </progress>
+            <!-- Indicador de porcentaje sobre la barra -->
+            <div class="absolute inset-0 flex items-center justify-center h-4">
+              <span class="text-[11px] font-semibold text-white drop-shadow-sm leading-[1]">
+                {{ safeProgress().completionPercentage ? ((safeProgress().completionPercentage) / 100 | percent) : '0%' }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabla de standings -->
+    <div class="overflow-x-auto">
+      <table class="table table-zebra w-full">
+        <thead>
+          <tr>
+            <th class="text-center">Posición</th>
+            <th>Pareja</th>
+            <th class="text-center">PJ</th>
+            <th class="text-center">G</th>
+            <th class="text-center">P</th>
+            <th class="text-center">JG</th>
+            <th class="text-center">JP</th>
+            <th class="text-center">Dif</th>
+            <th class="text-center">Puntos</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (standing of standings(); track standing.pairId; let i = $index) {
+          <tr class="hover">
+            <td class="text-center font-bold">
+              <div class="flex items-center justify-center">
+                <span>{{ i + 1 }}</span>
+                <div class="w-8 ml-2 text-center">
+                  @if (isTournamentFinished()) {
+                  @if (i === 0) { 🏆 }
+                  @else if (i === 1) { 🥈 }
+                  @else if (i === 2) { 🥉 }
+                  }
+                </div>
+              </div>
+            </td>
+            <td class="font-medium">{{ standing.pairName }}</td>
+            <td class="text-center">{{ standing.matchesPlayed }}</td>
+            <td class="text-center text-success font-bold">{{ standing.wins }}</td>
+            <td class="text-center text-error">{{ standing.losses }}</td>
+            <td class="text-center">{{ standing.gamesWon }}</td>
+            <td class="text-center">{{ standing.gamesLost }}</td>
+            <td class="text-center font-medium" [class.text-success]="standing.gamesWon - standing.gamesLost > 0"
+              [class.text-error]="standing.gamesWon - standing.gamesLost < 0">
+              {{ (standing.gamesWon - standing.gamesLost) > 0 ? '+' : '' }}{{ standing.gamesWon - standing.gamesLost }}
+            </td>
+            <td class="text-center text-primary font-bold text-lg">{{ standing.points }}</td>
+          </tr>
+          } @empty {
+          @if (isLoading()) {
+          <tr>
+            <td colspan="9" class="text-center py-8">
+              <span class="loading loading-spinner loading-lg text-primary"></span>
+            </td>
+          </tr>
+          } @else if (errorMessage()) {
+          <tr>
+            <td colspan="9" class="text-center text-error py-8">
+              Error al cargar las clasificaciones.
+            </td>
+          </tr>
+          } @else {
+          <tr>
+            <td colspan="9" class="text-center py-8">
+              No se encontraron clasificaciones.
+            </td>
+          </tr>
+          }
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Leyenda -->
+    <div class="bg-base-200 rounded-lg p-4 mt-6">
+      <h3 class="font-bold mb-3">Leyenda:</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm">
+        <div><strong>PJ:</strong> Partidos Jugados</div>
+        <div><strong>G:</strong> Ganados</div>
+        <div><strong>P:</strong> Perdidos</div>
+        <div><strong>JG:</strong> Juegos Ganados</div>
+        <div><strong>JP:</strong> Juegos Perdidos</div>
+        <div><strong>Dif:</strong> Diferencia</div>
+        <div><strong>Puntos:</strong> Puntuación Total</div>
+      </div>
+    </div>
+  </div>
+</section>

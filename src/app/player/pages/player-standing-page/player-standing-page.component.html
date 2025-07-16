@@ -1,0 +1,18 @@
+@if (playerStandingResource.error()) {
+  <app-not-found />
+}
+
+@if (playerStandingResource.isLoading()) {
+  <div class="flex flex-col items-center mt-10 gap-2">
+    <span class="loading loading-spinner loading-lg text-primary"></span>
+    <p class="text-primary text-lg font-medium">Loading player standing data...</p>
+  </div>
+}
+
+@if (playerStandingResource.hasValue() && playerStandingResource.value()) {
+  @if (isRootRoute()) {
+    <player-standing-information [playerStanding]="playerStandingResource.value()!" />
+  } @else {
+    <router-outlet />
+  }
+}
