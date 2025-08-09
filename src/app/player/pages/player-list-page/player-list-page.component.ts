@@ -1,33 +1,56 @@
 import { Component, inject, signal } from '@angular/core';
 import { PlayerService } from '../../services/player.service';
 import { SweetAlertService } from '../../../shared/services/sweet-alert.service';
-import { rxResource } from '@angular/core/rxjs-interop';
+import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { SearchInputComponent } from '../../../shared/components/search-input/search-input.component';
 import { PlayerListComponent } from './player-list/player-list.component';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { PlusIconComponent } from "../../../icons/plus-icon/plus-icon.component";
+import { map } from 'rxjs';
+import { PaginationComponent } from "../../../shared/components/pagination/pagination.component";
+import { PaginationService } from '../../../shared/components/pagination/pagination.service';
 
 @Component({
   selector: 'app-player-list-page',
-  imports: [SearchInputComponent, PlayerListComponent, RouterLink, PlusIconComponent],
+  imports: [SearchInputComponent, PlayerListComponent, RouterLink, PlusIconComponent, PaginationComponent],
   templateUrl: './player-list-page.component.html',
 })
 export class PlayerListPageComponent {
 
   playerService = inject(PlayerService);
   sweetAlertService = inject(SweetAlertService);
+  paginationService = inject(PaginationService);
   query = signal<string>('');
 
+  activatedRoute = inject(ActivatedRoute);
+
+  readonly pageSize = 8;
+
+  getGlobalIndex(localIndex: number): number {
+    const currentPageZeroBased = this.paginationService.currentPage() - 1;
+
+    return (currentPageZeroBased * this.pageSize) + localIndex + 1;
+  }
+
   playerResource = rxResource({
-    stream: () => this.playerService.getAll()
+    params: () => ({
+      page: this.paginationService.currentPage() - 1,
+      search: this.query()
+    }),
+    stream: ({ params }) => {
+      return this.playerService.getAll({
+        size: 8,
+        page: params.page,
+      });
+    }
   });
 
   async deletePlayer(playerId: string) {
 
-    const player = this.playerResource.value()?.find(t => t.id === playerId);
+    const player = this.playerResource.value()?.items.find(t => t.id === playerId);
     if (!player) return;
 
-    const confirmed = await this.sweetAlertService.confirmDelete(player.name, 'jugador');
+    const confirmed = await this.sweetAlertService.confirmDelete(`${player.name} ${player.lastName}`, 'jugador');
 
     if (confirmed) {
       this.sweetAlertService.showLoading('Eliminando...', 'Por favor espera');

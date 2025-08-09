@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'tournament-layout',
+  selector: 'app-auth-layout',
   imports: [RouterOutlet],
-  templateUrl: './TournamentLayout.component.html',
+  templateUrl: './AuthLayout.component.html',
 })
-export class TournamentLayoutComponent { }
+export class AuthLayoutComponent { }

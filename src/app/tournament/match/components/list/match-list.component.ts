@@ -1,7 +1,7 @@
 import { Component, computed, input } from '@angular/core';
 import { Match } from '../../interfaces/match.interface';
 import { DatePipe, TitleCasePipe } from '@angular/common';
-import { EnumLabelPipe } from '../../../pipes/enum-label.pipe';
+import { EnumLabelPipe } from '../../../../shared/pipes/enum-label.pipe';
 
 @Component({
   selector: 'match-list',

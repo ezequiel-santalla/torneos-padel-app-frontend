@@ -1,9 +1,11 @@
 import { Component, inject, signal, computed, effect } from '@angular/core';
 import { PlayerRankingService } from '../../services/player-ranking.service';
-import { rxResource, takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { rxResource, takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { RankingListComponent } from './ranking-list/ranking-list.component';
 import { DropDownComponent } from '../../../shared/components/drop-down/drop-down.component';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { map } from 'rxjs';
+import { PaginationComponent } from "../../../shared/components/pagination/pagination.component";
 
 @Component({
   selector: 'app-player-ranking-page',
@@ -13,41 +15,54 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class PlayerRankingPageComponent {
 
   playerRankingService = inject(PlayerRankingService);
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
+  activatedRoute = inject(ActivatedRoute);
+  router = inject(Router);
 
-  // Señales para los filtros del dropdown
   selectedGender = signal<string>('');
   selectedCategory = signal<string>('');
 
-  // Computed signal que combina todos los filtros
-  private filters = computed(() => ({
-    gender: this.selectedGender(),
-    category: this.selectedCategory()
-  }));
+  shouldShowRanking = computed(() =>
+    this.selectedGender() !== '' && this.selectedCategory() !== ''
+  );
 
-  // rxResource que se actualiza reactivamente cuando cambian los filtros
+  currentPage = toSignal(
+    this.activatedRoute.queryParamMap.pipe(
+      map(params => params.get('page') ? +params.get('page')! : 1),
+      map(page => isNaN(page) ? 1 : page)
+    ),
+    {
+      initialValue: 1,
+    }
+  );
+
   playerRankingResource = rxResource({
-    params: () => this.filters(),
-    stream: ({ params: filters }) => {
-      return this.playerRankingService.getRanking(
-        filters.gender || undefined,
-        filters.category || undefined,
-      );
-    },
+    params: () => ({
+      page: this.currentPage() - 1,
+      gender: this.selectedGender(),
+      category: this.selectedCategory()
+    }),
+    stream: ({ params }) => {
+      return this.playerRankingService.getRanking({
+        page: params.page,
+        gender: params.gender || undefined,
+        category: params.category || undefined
+      });
+    }
   });
 
   constructor() {
-    // Efecto solo para actualizar URL
+    // Efecto para actualizar URL cuando cambian los filtros
     effect(() => {
-      this.updateUrl();
+      // Solo actualizar URL si hay cambios en los filtros (no en la carga inicial)
+      if (this.selectedGender() !== '' || this.selectedCategory() !== '') {
+        this.updateUrl();
+      }
     });
 
-    // Suscripción a los parámetros de la URL
-    this.route.queryParams
+    // Suscripción a los parámetros de la URL para inicializar filtros
+    this.activatedRoute.queryParams
       .pipe(takeUntilDestroyed())
       .subscribe(params => {
-        // Actualizar señales basado en los parámetros de la URL
         this.selectedGender.set(params['gender'] || '');
         this.selectedCategory.set(params['category'] || '');
       });
@@ -64,19 +79,19 @@ export class PlayerRankingPageComponent {
 
   // Método para actualizar la URL con los filtros actuales
   private updateUrl() {
-    const queryParams: any = {};
+    const queryParams: { [key: string]: string } = {};
 
     if (this.selectedGender()) {
-      queryParams.gender = this.selectedGender();
+      queryParams['gender'] = this.selectedGender();
     }
     if (this.selectedCategory()) {
-      queryParams.category = this.selectedCategory();
+      queryParams['category'] = this.selectedCategory();
     }
 
     this.router.navigate([], {
-      relativeTo: this.route,
+      relativeTo: this.activatedRoute,
       queryParams,
-      queryParamsHandling: 'replace',
+      queryParamsHandling: 'merge', // Cambiado a 'merge' para preservar otros parámetros como page
       replaceUrl: true
     });
   }
@@ -85,5 +100,16 @@ export class PlayerRankingPageComponent {
   clearFilters() {
     this.selectedGender.set('');
     this.selectedCategory.set('');
+
+    // Actualizar URL eliminando los filtros
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: {
+        gender: null,
+        category: null
+      },
+      queryParamsHandling: 'merge',
+      replaceUrl: true
+    });
   }
 }

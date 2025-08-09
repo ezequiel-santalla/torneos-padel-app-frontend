@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { EnumLabelMap } from '../constants/enum-labels';
+import { EnumLabelMap } from '../../constants/enum-labels';
 import { EnumOption } from '../../enum/interfaces/enum.interface';
 
 @Pipe({

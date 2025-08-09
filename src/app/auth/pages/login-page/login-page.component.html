@@ -1,0 +1,90 @@
+<section class="min-h-screen flex items-center justify-center px-4 py-4">
+  <div class="w-full max-w-md">
+    <!-- Header -->
+    <div class="text-center mb-6">
+      <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br rounded-full mb-4">
+        <user-icon [iconWidth]="40" [iconHeight]="40" />
+      </div>
+      <h1 class="text-3xl font-bold text-base-content mb-2">Iniciar Sesión</h1>
+      <p class="text-base-content/70">Accede a tu cuenta</p>
+    </div>
+
+    <!-- Form Card -->
+    <div class="card bg-base-100 shadow-2xl">
+      <div class="card-body">
+        <form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="space-y-6">
+
+          <!-- Email -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold">Email</span>
+            </label>
+            <label
+              class="input input-bordered input-accent w-full focus:accent-accent transition-all duration-300 flex items-center gap-2 my-1">
+              <mail-icon />
+              <input type="email" placeholder="Ej: juan.perez@example.com" formControlName="email"
+                class="grow placeholder-gray-400 placeholder:italic" required />
+            </label>
+
+            @if ( formUtils.isValidField(myForm, 'email') ) {
+            <span class="form-text text-warning">
+              {{ formUtils.getTextError(myForm, 'email') }}
+            </span>
+            }
+          </div>
+
+          <!-- Contraseña -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold">Contraseña</span>
+            </label>
+            <label
+              class="input input-bordered input-accent w-full focus:accent-accent transition-all duration-300 flex items-center gap-2 my-1">
+              <password-icon />
+              <input type="password" placeholder="Mínimo 6 caracteres" formControlName="password"
+                class="grow placeholder-gray-400 placeholder:italic" required />
+            </label>
+
+            @if ( formUtils.isValidField(myForm, 'password') ) {
+            <span class="form-text text-warning">
+              {{ formUtils.getTextError(myForm, 'password') }}
+            </span>
+            }
+          </div>
+
+          <!-- Link de contraseña olvidada -->
+          <div class="text-right">
+            <a href="#" class="text-accent hover:text-accent-focus text-sm transition-colors duration-300">
+              ¿Olvidaste tu contraseña?
+            </a>
+          </div>
+
+          <!-- Botones -->
+          <div class="flex flex-col sm:flex-row gap-4 pt-6">
+            <button type="submit"
+              class="btn btn-primary bg-gradient-to-r border-none text-white flex-1 hover:scale-105 transition-all duration-300 shadow-lg">
+              <user-icon [iconWidth]="24" [iconHeight]="24" />
+              Iniciar Sesión
+            </button>
+            <button type="button" (click)="onCancel()"
+              class="btn btn-outline btn-secondary flex-1 hover:scale-105 transition-all duration-300">
+              <reset-icon />
+              Limpiar
+            </button>
+          </div>
+        </form>
+
+        <!-- Registro -->
+        <div class="divider">O</div>
+        <div class="text-center">
+          <p class="text-base-content/70">
+            ¿No tienes una cuenta?
+            <a routerLink="/auth/register" class="text-accent hover:text-accent-focus font-semibold transition-colors duration-300">
+              Regístrate aquí
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -6,7 +6,13 @@
 </div>
 
 <tournament-list
-  [tournaments]="tournamentResource.value() ?? []"
+  [tournaments]="tournamentResource.value()?.items ?? []"
   [isLoading]="tournamentResource.status() === 'loading' || tournamentResource.status() === 'reloading'"
   [errorMessage]="tournamentResource.error()?.message"
-  (deleteTournament)="deleteTournament($event)" />
+  (deleteTournament)="deleteTournament($event)"
+/>
+
+<app-pagination
+  [pages]="tournamentResource.value()?.pagination?.totalPages ?? 0"
+  [currentPage]="paginationService.currentPage()"
+/>

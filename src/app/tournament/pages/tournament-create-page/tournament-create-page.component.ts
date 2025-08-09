@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { TournamentCreateFormComponent } from "./tournament-create-form/tournament-create-form.component";
 
 @Component({

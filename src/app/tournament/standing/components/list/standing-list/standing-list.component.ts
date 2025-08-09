@@ -2,7 +2,7 @@ import { Component, computed, input } from '@angular/core';
 import { Standing } from '../../../interfaces/standing.interface';
 import { Progress } from '../../../../progress/interfaces/progress.interface';
 import { PercentPipe } from '@angular/common';
-import { EnumLabelPipe } from '../../../../pipes/enum-label.pipe';
+import { EnumLabelPipe } from '../../../../../shared/pipes/enum-label.pipe';
 import { ChartIconComponent } from "../../../../../icons/chart-icon/chart-icon.component";
 
 @Component({

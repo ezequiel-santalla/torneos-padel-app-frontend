@@ -7,7 +7,15 @@
   </button>
 </div>
 
-<player-list [players]="playerResource.value() ?? []"
+<player-list
+  [players]="playerResource.value()?.items ?? []"
   [isLoading]="playerResource.status() === 'loading' || playerResource.status() === 'reloading'"
   [errorMessage]="playerResource.error()?.message"
-  (deletePlayer)="deletePlayer($event)" />
+  [getGlobalIndex]="getGlobalIndex.bind(this)"
+  (deletePlayer)="deletePlayer($event)"
+/>
+
+<app-pagination
+  [pages]="playerResource.value()?.pagination?.totalPages ?? 0"
+  [currentPage]="paginationService.currentPage()"
+/>

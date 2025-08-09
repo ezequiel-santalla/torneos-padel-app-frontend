@@ -1,5 +1,11 @@
 const BASE = 'http://localhost:8080/api/v1';
 
+export const AUTH_URLS = {
+  LOGIN: `${BASE}/auth/login`,
+  REGISTER: `${BASE}/auth/register`,
+  CHECK_STATUS: `${BASE}/auth/check-status`,
+};
+
 export const ENUM_URLS = {
   ENUMS: `${BASE}/enums`,
 };

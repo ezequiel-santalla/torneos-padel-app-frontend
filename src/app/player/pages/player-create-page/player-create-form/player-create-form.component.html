@@ -5,8 +5,8 @@
       <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br rounded-full mb-4">
         <clock-icon />
       </div>
-      <h1 class="text-3xl font-bold text-base-content mb-2">{{ pageTitle }}</h1>
-      <p class="text-base-content/70">{{ pageSubtitle }}</p>
+      <h1 class="text-3xl font-bold text-base-content mb-2">{{ pageTitle() }}</h1>
+      <p class="text-base-content/70">{{ pageSubtitle() }}</p>
     </div>
 
     <!-- Form Card -->
@@ -70,10 +70,10 @@
                 class="my-1 select select-bordered select-accent w-full focus:accent-accent transition-all duration-300"
                 required>
                 <option value="">-- Selecciona el género --</option>
-                @if (isLoadingEnums) {
+                @if (isLoadingEnums()) {
                 <option disabled>Cargando...</option>
                 } @else {
-                @for (option of genderOptions; track option.value) {
+                @for (option of genderOptions(); track option.value) {
                 <option [value]="option.value">{{ option | enumLabel:'gender' }}</option>
                 }
                 }
@@ -105,18 +105,18 @@
 
           <!-- Botones -->
           <div class="flex flex-col sm:flex-row gap-4 pt-6">
-            <button type="submit" (click)="onSubmit()" [disabled]="isSubmitting || isLoadingEnums"
+            <button type="submit" (click)="onSubmit()" [disabled]="isSubmitting() || isLoadingEnums()"
               class="btn btn-primary bg-gradient-to-r border-none text-white flex-1 hover:scale-105 transition-all duration-300 shadow-lg">
               <confirm-icon />
-              @if (isSubmitting) {
+              @if (isSubmitting()) {
               <span class="loading loading-spinner loading-sm"></span>
               }
-              {{ submitButtonText }}
+              {{ submitButtonText() }}
             </button>
-            <button type="button" (click)="onCancel()" [disabled]="isSubmitting"
+            <button type="button" (click)="onCancel()" [disabled]="isSubmitting()"
               class="btn btn-outline btn-secondary flex-1 hover:scale-105 transition-all duration-300">
               <reset-icon />
-              {{ cancelButtonText }}
+              {{ cancelButtonText() }}
             </button>
           </div>
         </form>

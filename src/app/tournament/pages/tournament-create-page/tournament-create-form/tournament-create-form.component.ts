@@ -9,7 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { EnumService } from '../../../../enum/services/enum.service';
 import { forkJoin } from 'rxjs';
 import { EnumOption } from '../../../../enum/interfaces/enum.interface';
-import { EnumLabelPipe } from '../../../pipes/enum-label.pipe';
+import { EnumLabelPipe } from '../../../../shared/pipes/enum-label.pipe';
 import { Tournament } from '../../../interfaces/tournament.interface';
 import { SweetAlertService } from '../../../../shared/services/sweet-alert.service';
 
@@ -259,7 +259,7 @@ export class TournamentCreateFormComponent implements OnInit {
           );
 
           this.resetForm();
-          this.router.navigate(['/tournaments/all']);
+          this.router.navigate(['/tournaments']);
         },
         error: (error) => {
           console.error('Error creando torneo:', error);

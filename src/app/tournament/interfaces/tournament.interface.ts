@@ -1,5 +1,11 @@
 import { EnumOption } from "../../enum/interfaces/enum.interface";
+import { Pagination } from "../../shared/interfaces/pagination.interface";
 import { Pair } from "../pair/interfaces/pair.interface";
+
+export interface TournamentsResponse {
+  items:      Tournament[];
+  pagination: Pagination;
+}
 
 export interface Tournament {
   id:               string;
@@ -14,4 +20,5 @@ export interface Tournament {
   winningMatchRule: EnumOption;
   pairs:            Pair[];
 }
+
 

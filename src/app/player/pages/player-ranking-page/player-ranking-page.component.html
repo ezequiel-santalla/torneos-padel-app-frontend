@@ -14,7 +14,14 @@
   </div>
 </div>
 
-<ranking-list
-  [players]="playerRankingResource.value() ?? []"
+@if (shouldShowRanking()) {
+<ranking-list [players]="playerRankingResource.value() ?? []"
   [isLoading]="playerRankingResource.status() === 'loading' || playerRankingResource.status() === 'reloading'"
   [errorMessage]="playerRankingResource.error()?.message" />
+} @else {
+<div class="text-center py-8">
+  <div class="text-lg text-base-content/70">
+    Selecciona género y categoría para ver el ranking
+  </div>
+</div>
+}

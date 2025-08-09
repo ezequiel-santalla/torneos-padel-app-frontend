@@ -92,7 +92,6 @@ export class SweetAlertService {
     return this.confirmAction(isEditMode, matchName, 'partido');
   }
 
-  // Confirmación genérica personalizable
   async confirmCustomAction(
     title: string,
     text: string,
@@ -183,6 +182,46 @@ export class SweetAlertService {
       ...this.defaultConfig
     });
   }
+
+  async confirmLogout(userName?: string): Promise<boolean> {
+  const greeting = userName ? `${userName}` : 'usuario';
+
+  const result = await Swal.fire({
+    title: '¿Cerrar sesión?',
+    text: `¡Hasta luego, ${greeting}! ¿Estás seguro que deseas cerrar sesión?`,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Sí, cerrar sesión',
+    cancelButtonText: 'Cancelar',
+    focusCancel: false,
+    reverseButtons: true,
+    customClass: {
+      popup: 'rounded-lg',
+      confirmButton: 'rounded-lg',
+      cancelButton: 'rounded-lg'
+    },
+    confirmButtonColor: '#f59e0b',
+    cancelButtonColor: '#6b7280',
+  });
+
+  return result.isConfirmed;
+}
+
+showLogoutSuccess(userName?: string) {
+  const message = userName ? `¡Hasta luego, ${userName}!` : '¡Hasta luego!';
+
+  Swal.fire({
+    title: message,
+    text: 'Has cerrado sesión correctamente.',
+    icon: 'success',
+    timer: 2000,
+    timerProgressBar: true,
+    showConfirmButton: false,
+    customClass: {
+      popup: 'rounded-lg'
+    }
+  });
+}
 
   close() {
     Swal.close();

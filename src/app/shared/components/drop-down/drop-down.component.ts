@@ -8,7 +8,7 @@ import {
   inject,
 } from '@angular/core';
 import { EnumService } from '../../../enum/services/enum.service';
-import { EnumLabelPipe } from '../../../tournament/pipes/enum-label.pipe';
+import { EnumLabelPipe } from '../../pipes/enum-label.pipe';
 import {
   EnumName,
   EnumOption,

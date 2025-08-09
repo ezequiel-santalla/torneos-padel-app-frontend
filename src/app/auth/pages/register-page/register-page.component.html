@@ -1,9 +1,9 @@
-<section class="container mx-auto px-4 py-4">
+<section class="min-h-screen flex items-center justify-center px-4 py-4">
   <div class="max-w-2xl mx-auto">
     <!-- Header -->
     <div class="text-center mb-6">
       <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br rounded-full mb-4">
-        <user-icon />
+        <user-icon [iconWidth]="40" [iconHeight]="40" />
       </div>
       <h1 class="text-3xl font-bold text-base-content mb-2">Registro de Usuario</h1>
       <p class="text-base-content/70">Completa tus datos para crear tu cuenta</p>
@@ -91,16 +91,41 @@
               <label
                 class="input input-bordered input-accent w-full focus:accent-accent transition-all duration-300 flex items-center gap-2 my-1">
                 <phone-icon />
-                <input type="tel" placeholder="Ej: +54 9 11 1234-5678" formControlName="phone"
+                <input type="tel" placeholder="Ej: +54 9 11 1234-5678" formControlName="phoneNumber"
                   class="grow placeholder-gray-400 placeholder:italic" required />
               </label>
 
-              @if ( formUtils.isValidField(myForm, 'phone') ) {
+              @if ( formUtils.isValidField(myForm, 'phoneNumber') ) {
               <span class="form-text text-warning">
-                {{ formUtils.getTextError(myForm, 'phone') }}
+                {{ formUtils.getTextError(myForm, 'phoneNumber') }}
               </span>
               }
             </div>
+          </div>
+
+          <!-- Género -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold">Género</span>
+            </label>
+            <select formControlName="genderType"
+              class="my-1 select select-bordered select-accent w-full focus:accent-accent transition-all duration-300"
+              required>
+              <option value="">-- Selecciona el género --</option>
+              @if (isLoadingEnums) {
+              <option disabled>Cargando...</option>
+              } @else {
+              @for (option of genderOptions; track option.value) {
+              <option [value]="option.value">{{ option | enumLabel:'gender' }}</option>
+              }
+              }
+            </select>
+
+            @if ( formUtils.isValidField(myForm, 'genderType') ) {
+            <span class="form-text text-warning">
+              {{ formUtils.getTextError(myForm, 'genderType') }}
+            </span>
+            }
           </div>
 
           <!-- Contraseña y Confirmación -->
@@ -157,12 +182,15 @@
 
           <!-- Botones -->
           <div class="flex flex-col sm:flex-row gap-4 pt-6">
-            <button type="submit"
+            <button type="submit" [disabled]="isLoadingEnums || isSubmitting"
               class="btn btn-primary bg-gradient-to-r border-none text-white flex-1 hover:scale-105 transition-all duration-300 shadow-lg">
               <add-user-icon />
-              Crear Cuenta
+              @if (isSubmitting) {
+              <span class="loading loading-spinner loading-sm"></span>
+              }
+              {{ isSubmitting ? 'Creando...' : 'Crear Cuenta' }}
             </button>
-            <button type="button" (click)="onCancel()"
+            <button type="button" (click)="onCancel()" [disabled]="isLoadingEnums || isSubmitting"
               class="btn btn-outline btn-secondary flex-1 hover:scale-105 transition-all duration-300">
               <reset-icon />
               Limpiar

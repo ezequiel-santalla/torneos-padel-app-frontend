@@ -1,7 +1,7 @@
 import { Component, computed, input, output } from '@angular/core';
 import { Player } from '../../../interfaces/player.interface';
 import { RouterLink } from '@angular/router';
-import { EnumLabelPipe } from '../../../../tournament/pipes/enum-label.pipe';
+import { EnumLabelPipe } from '../../../../shared/pipes/enum-label.pipe';
 
 @Component({
   selector: 'player-list',
@@ -13,6 +13,9 @@ export class PlayerListComponent {
   players = input<Player[]>([]);
   errorMessage = input<string | null>();
   isLoading = input<boolean>(false);
+
+  getGlobalIndex = input<(index: number) => number>();
+
   deletePlayer = output<string>();
 
   isEmpty = computed(() => this.players().length === 0);

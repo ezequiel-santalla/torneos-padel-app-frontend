@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormUtils } from '../../../../utils/form-utils';
 import { ClockIconComponent } from "../../../../icons/clock-icon/clock-icon.component";
@@ -8,7 +8,7 @@ import { PlayerService } from '../../../services/player.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EnumService } from '../../../../enum/services/enum.service';
 import { EnumOption } from '../../../../enum/interfaces/enum.interface';
-import { EnumLabelPipe } from '../../../../tournament/pipes/enum-label.pipe';
+import { EnumLabelPipe } from '../../../../shared/pipes/enum-label.pipe';
 import { Player } from '../../../interfaces/player.interface';
 import { SweetAlertService } from '../../../../shared/services/sweet-alert.service';
 
@@ -26,34 +26,35 @@ export class PlayerCreateFormComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private sweetAlertService = inject(SweetAlertService);
 
-  get pageTitle(): string {
-    return this.isEditMode ? 'Editar Jugador' : 'Nuevo Jugador';
-  }
+  // Signals para el estado del componente
+  isSubmitting = signal(false);
+  isLoadingEnums = signal(true);
+  isEditMode = signal(false);
+  playerId = signal<string | null>(null);
+  currentPlayer = signal<Player | null>(null);
+  genderOptions = signal<EnumOption[]>([]);
 
-  get pageSubtitle(): string {
-    return this.isEditMode ? 'Modifica los datos del jugador' : 'Completa los datos del jugador';
-  }
+  // Computed signals para valores derivados
+  pageTitle = computed(() =>
+    this.isEditMode() ? 'Editar Jugador' : 'Nuevo Jugador'
+  );
 
-  get submitButtonText(): string {
-    if (this.isSubmitting) {
-      return this.isEditMode ? 'Actualizando...' : 'Creando...';
+  pageSubtitle = computed(() =>
+    this.isEditMode() ? 'Modifica los datos del jugador' : 'Completa los datos del jugador'
+  );
+
+  submitButtonText = computed(() => {
+    if (this.isSubmitting()) {
+      return this.isEditMode() ? 'Actualizando...' : 'Creando...';
     }
-    return this.isEditMode ? 'Actualizar Jugador' : 'Crear Jugador';
-  }
+    return this.isEditMode() ? 'Actualizar Jugador' : 'Crear Jugador';
+  });
 
-  get cancelButtonText(): string {
-    return this.isEditMode ? 'Cancelar' : 'Limpiar';
-  }
+  cancelButtonText = computed(() =>
+    this.isEditMode() ? 'Cancelar' : 'Limpiar'
+  );
 
   formUtils = FormUtils;
-
-  isSubmitting = false;
-  isLoadingEnums = true;
-  isEditMode = false;
-  playerId: string | null = null;
-  currentPlayer: Player | null = null;
-
-  genderOptions: EnumOption[] = [];
 
   myForm: FormGroup = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
@@ -70,33 +71,33 @@ export class PlayerCreateFormComponent implements OnInit {
 
   private checkEditMode() {
     const url = this.router.url;
-    this.isEditMode = url.includes('/edit');
+    this.isEditMode.set(url.includes('/edit'));
 
-    if (this.isEditMode) {
-      this.playerId = this.route.parent?.snapshot.paramMap.get('id') || null;
+    if (this.isEditMode()) {
+      this.playerId.set(this.route.parent?.snapshot.paramMap.get('id') || null);
     }
   }
 
   private loadEnumOptions() {
-    this.isLoadingEnums = true;
+    this.isLoadingEnums.set(true);
 
     // Deshabilitar el campo de género mientras se carga
     this.setSelectFieldsDisabled(true);
 
     this.enumService.getEnumValues('gender-types').subscribe({
       next: (genders) => {
-        this.genderOptions = genders;
-        this.isLoadingEnums = false;
+        this.genderOptions.set(genders);
+        this.isLoadingEnums.set(false);
         this.setSelectFieldsDisabled(false);
 
         // Si estamos en modo edición, cargar los datos del jugador
-        if (this.isEditMode && this.playerId) {
-          this.loadPlayerData(this.playerId);
+        if (this.isEditMode() && this.playerId()) {
+          this.loadPlayerData(this.playerId()!);
         }
       },
       error: (error) => {
         console.error('Error cargando opciones de género:', error);
-        this.isLoadingEnums = false;
+        this.isLoadingEnums.set(false);
         this.setSelectFieldsDisabled(false);
       }
     });
@@ -112,7 +113,7 @@ export class PlayerCreateFormComponent implements OnInit {
   private loadPlayerData(id: string) {
     this.playerService.getById(id).subscribe({
       next: (player: Player) => {
-        this.currentPlayer = player;
+        this.currentPlayer.set(player);
         this.populateForm(player);
       },
       error: (error) => {
@@ -155,7 +156,7 @@ export class PlayerCreateFormComponent implements OnInit {
 
     // SOLICITAR CONFIRMACIÓN ANTES DE PROCEDER
     const confirmed = await this.sweetAlertService.confirmPlayerAction(
-      this.isEditMode,
+      this.isEditMode(),
       `${formValue.name} ${formValue.lastName}`
     );
 
@@ -163,19 +164,19 @@ export class PlayerCreateFormComponent implements OnInit {
       return; // El usuario canceló la acción
     }
 
-    this.isSubmitting = true;
+    this.isSubmitting.set(true);
 
     // Mostrar loading
     this.sweetAlertService.showLoading(
-      this.isEditMode ? 'Actualizando jugador...' : 'Creando jugador...',
+      this.isEditMode() ? 'Actualizando jugador...' : 'Creando jugador...',
       'Por favor espera mientras procesamos la información'
     );
 
-    if (this.isEditMode && this.playerId) {
+    if (this.isEditMode() && this.playerId()) {
       // Modo edición - actualizar jugador existente
-      this.playerService.update(this.playerId, formValue).subscribe({
+      this.playerService.update(this.playerId()!, formValue).subscribe({
         next: () => {
-          this.isSubmitting = false;
+          this.isSubmitting.set(false);
 
           // Mostrar éxito
           this.sweetAlertService.showSuccess(
@@ -188,7 +189,7 @@ export class PlayerCreateFormComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error actualizando jugador:', error);
-          this.isSubmitting = false;
+          this.isSubmitting.set(false);
 
           // Mostrar error
           this.sweetAlertService.showError(
@@ -202,7 +203,7 @@ export class PlayerCreateFormComponent implements OnInit {
       this.playerService.create(formValue).subscribe({
         next: (createdPlayer) => {
           console.log('Jugador creado exitosamente:', createdPlayer);
-          this.isSubmitting = false;
+          this.isSubmitting.set(false);
 
           // Mostrar éxito
           this.sweetAlertService.showSuccess(
@@ -215,7 +216,7 @@ export class PlayerCreateFormComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error creando jugador:', error);
-          this.isSubmitting = false;
+          this.isSubmitting.set(false);
 
           // Mostrar error
           this.sweetAlertService.showError(
@@ -228,7 +229,7 @@ export class PlayerCreateFormComponent implements OnInit {
   }
 
   onCancel() {
-    if (this.isEditMode && this.playerId) {
+    if (this.isEditMode() && this.playerId()) {
       // Si estamos editando, volver al detalle del jugador
       this.router.navigate(['/players/all']);
     } else {
