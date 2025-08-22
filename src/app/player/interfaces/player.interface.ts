@@ -10,7 +10,7 @@ export interface Player {
   id:          string;
   name:        string;
   lastName:    string;
-  genderType:  EnumOption;
+  genderType:  string;
   dni:         string;
   phoneNumber: string;
 }

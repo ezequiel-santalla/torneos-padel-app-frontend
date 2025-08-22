@@ -43,10 +43,6 @@ export class PlayerService {
     );
   }
 
-  create(player: Player): Observable<Player> {
-    return this.http.post<Player>(PLAYER_URLS.PLAYERS, player);
-  }
-
   update(id: string, player: Player): Observable<Player> {
     return this.http.put<Player>(`${PLAYER_URLS.PLAYERS}/${id}`, player);
   }

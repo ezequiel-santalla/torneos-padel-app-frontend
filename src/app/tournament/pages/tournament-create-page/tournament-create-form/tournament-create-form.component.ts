@@ -87,7 +87,6 @@ export class TournamentCreateFormComponent implements OnInit {
   private loadEnumOptions() {
     this.isLoadingEnums = true;
 
-    // Deshabilitar los campos de select mientras se cargan
     this.setSelectFieldsDisabled(true);
 
     forkJoin({
@@ -105,7 +104,6 @@ export class TournamentCreateFormComponent implements OnInit {
         this.isLoadingEnums = false;
         this.setSelectFieldsDisabled(false);
 
-        // Si estamos en modo edición, cargar los datos del torneo
         if (this.isEditMode && this.tournamentId) {
           this.loadTournamentData(this.tournamentId);
         }

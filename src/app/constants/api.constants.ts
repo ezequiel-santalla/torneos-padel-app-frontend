@@ -10,6 +10,10 @@ export const ENUM_URLS = {
   ENUMS: `${BASE}/enums`,
 };
 
+export const USER_URLS = {
+  USERS: `${BASE}/users`,
+};
+
 export const TOURNAMENT_URLS = {
   TOURNAMENTS: `${BASE}/tournaments`,
 };

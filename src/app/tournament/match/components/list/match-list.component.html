@@ -18,8 +18,40 @@
           </div>
 
           <!-- Resultado -->
-          <div class="text-xl font-bold text-primary">
-            {{ match.pair1Score }} <span class="px-2">–</span> {{ match.pair2Score }}
+          <div class="flex items-center gap-2">
+            @if (editingMatchId() === match.id) {
+              <!-- Modo edición -->
+              <input
+                type="number"
+                class="input input-sm input-bordered w-16 text-center"
+                [(ngModel)]="tempScores().pair1Score"
+                min="0"
+              />
+              <span class="px-2">–</span>
+              <input
+                type="number"
+                class="input input-sm input-bordered w-16 text-center"
+                [(ngModel)]="tempScores().pair2Score"
+                min="0"
+              />
+              <button
+                class="btn btn-sm btn-success"
+                (click)="saveResult(match)"
+                [disabled]="isUpdating()"
+              >
+                @if (isUpdating()) {
+                  <span class="loading loading-spinner loading-xs"></span>
+                } @else {
+                  ✓
+                }
+              </button>
+            } @else {
+              <!-- Modo vista -->
+              <div class="text-xl font-bold text-primary cursor-pointer hover:bg-base-300 px-2 py-1 rounded"
+                   (click)="startEdit(match)">
+                {{ match.pair1Score }} <span class="px-2">–</span> {{ match.pair2Score }}
+              </div>
+            }
           </div>
 
           <!-- Pareja 2 -->

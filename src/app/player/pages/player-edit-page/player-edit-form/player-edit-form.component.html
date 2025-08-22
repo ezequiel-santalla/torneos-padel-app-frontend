@@ -1,0 +1,138 @@
+<section class="container mx-auto px-4 py-16">
+  <div class="max-w-lg mx-auto">
+    <!-- Header -->
+    <div class="text-center mb-6">
+      <div class="avatar placeholder mb-4">
+        <div class="bg-white text-neutral-content w-20 h-20 rounded-full border-4 border-blue-200 shadow-lg">
+          @if (isPlayerMasculine) {
+          <img src="/avatar-man-face.png" [alt]="playerAlt" class="w-full h-full object-cover rounded-full" />
+          } @else if (isPlayerFeminine) {
+          <img src="/avatar-woman-face.png" [alt]="playerAlt" class="w-full h-full object-cover rounded-full" />
+          } @else {
+          <!-- Avatar por defecto mientras carga o si no hay género -->
+          <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+          </svg>
+          }
+        </div>
+      </div>
+      <h1 class="text-3xl font-bold text-base-content mb-2">Editar Jugador</h1>
+      <p class="text-base-content/70">Modifica los datos del jugador</p>
+    </div>
+
+    <!-- Form Card -->
+    <div class="card bg-base-100 shadow-2xl">
+      <div class="card-body">
+        <form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="space-y-6">
+
+          <!-- Nombre y Apellido -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-semibold">Nombre</span>
+              </label>
+              <input type="text" placeholder="Ej: Juan" formControlName="name"
+                class="my-1 input input-bordered input-accent w-full focus:accent-accent transition-all duration-300 placeholder-gray-400 placeholder:italic"
+                required />
+
+              @if ( formUtils.isValidField(myForm, 'name') ) {
+              <span class="form-text text-warning">
+                {{ formUtils.getTextError(myForm, 'name') }}
+              </span>
+              }
+            </div>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-semibold">Apellido</span>
+              </label>
+              <input type="text" placeholder="Ej: Pérez" formControlName="lastName"
+                class="my-1 input input-bordered input-accent w-full focus:accent-accent transition-all duration-300 placeholder-gray-400 placeholder:italic"
+                required />
+
+              @if ( formUtils.isValidField(myForm, 'lastName') ) {
+              <span class="form-text text-warning">
+                {{ formUtils.getTextError(myForm, 'lastName') }}
+              </span>
+              }
+            </div>
+          </div>
+
+          <!-- DNI -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold">DNI</span>
+            </label>
+            <input type="text" placeholder="Ej: 12345678" formControlName="dni"
+              class="my-1 input input-bordered input-accent w-full focus:accent-accent transition-all duration-300 placeholder-gray-400 placeholder:italic"
+              required />
+
+            @if ( formUtils.isValidField(myForm, 'dni') ) {
+            <span class="form-text text-warning">
+              {{ formUtils.getTextError(myForm, 'dni') }}
+            </span>
+            }
+          </div>
+
+          <!-- Teléfono -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold">Teléfono</span>
+            </label>
+            <input type="tel" placeholder="Ej: +54 223 4567890" formControlName="phoneNumber"
+              class="my-1 input input-bordered input-accent w-full focus:accent-accent transition-all duration-300 placeholder-gray-400 placeholder:italic"
+              required />
+
+            @if ( formUtils.isValidField(myForm, 'phoneNumber') ) {
+            <span class="form-text text-warning">
+              {{ formUtils.getTextError(myForm, 'phoneNumber') }}
+            </span>
+            }
+          </div>
+
+          <!-- Género -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold">Género</span>
+            </label>
+            <select formControlName="genderType"
+              class="my-1 select select-bordered select-accent w-full focus:accent-accent transition-all duration-300"
+              required>
+              <option value="">-- Selecciona el género --</option>
+              @if (isLoadingEnums) {
+              <option disabled>Cargando...</option>
+              } @else {
+              @for (option of genderOptions; track option.value) {
+              <option [value]="option.value">{{ option.value | enumLabel:'gender' }}</option>
+              }
+              }
+            </select>
+
+            @if ( formUtils.isValidField(myForm, 'genderType') ) {
+            <span class="form-text text-warning">
+              {{ formUtils.getTextError(myForm, 'genderType') }}
+            </span>
+            }
+          </div>
+
+          <!-- Botones -->
+          <div class="flex flex-col sm:flex-row gap-4 pt-6">
+            <button type="submit" (click)="onSubmit()" [disabled]="isSubmitting || isLoadingEnums"
+              class="btn btn-primary bg-gradient-to-r border-none text-white flex-1 hover:scale-105 transition-all duration-300 shadow-lg">
+              <confirm-icon />
+              @if (isSubmitting) {
+              <span class="loading loading-spinner loading-sm"></span>
+              }
+              {{ submitButtonText }}
+            </button>
+            <button type="button" (click)="onCancel()" [disabled]="isSubmitting"
+              class="btn btn-outline btn-secondary flex-1 hover:scale-105 transition-all duration-300">
+              <reset-icon />
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

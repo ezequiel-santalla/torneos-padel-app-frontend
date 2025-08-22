@@ -92,7 +92,10 @@ export class RegisterPageComponent implements OnInit {
     this.enumService.getEnumValues('gender-types').subscribe({
       next: (data) => {
         console.log('Opciones de género recibidas:', data);
-        this.genderOptions = data;
+        this.genderOptions = data.filter(
+          (option: EnumOption) =>
+            option.value === 'MASCULINE' || option.value === 'FEMININE'
+        );
         this.isLoadingEnums = false;
         this.setSelectFieldsDisabled(false);
       },

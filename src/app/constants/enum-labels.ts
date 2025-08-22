@@ -30,6 +30,7 @@ export const EnumLabelMap: Record<string, Record<string, string>> = {
 
   tournamentType: {
     QUADRANGULAR: 'Cuadrangular',
+    HEXAGONAL: 'Hexagonal',
     KNOCKOUT: 'Eliminación directa',
     ROUND_ROBIN: 'Todos contra todos',
   },

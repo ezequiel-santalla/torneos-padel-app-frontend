@@ -1,7 +1,7 @@
 import { Routes } from "@angular/router";
-import { PlayerCreatePageComponent } from "./pages/player-create-page/player-create-page.component";
 import { PlayerListPageComponent } from "./pages/player-list-page/player-list-page.component";
-import { PlayerRankingPageComponent } from "./pages/player-ranking-page/player-ranking-page.component";
+import { PlayerEditFormComponent } from "./pages/player-edit-page/player-edit-form/player-edit-form.component";
+
 
 export const playerRoutes: Routes = [
   {
@@ -9,15 +9,11 @@ export const playerRoutes: Routes = [
     component: PlayerListPageComponent
   },
   {
-    path: 'create',
-    component: PlayerCreatePageComponent
-  },
-  {
     path: ':id',
     children: [
       {
         path: 'edit',
-        component: PlayerCreatePageComponent
+        component: PlayerEditFormComponent
       }
     ]
   }

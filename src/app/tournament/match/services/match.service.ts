@@ -22,4 +22,20 @@ export class MatchService {
       tap(matches => this.matchesCache.set(tournamentId, matches))
     );
   }
+
+  updateMatchResult(
+    tournamentId: string,
+    matchId: string,
+    result: { pair1Score: number; pair2Score: number }
+  ): Observable<Match> {
+    return this.http.put<Match>(
+      `${TOURNAMENT_URLS.TOURNAMENTS}/${tournamentId}/matches/${matchId}/result`,
+      result
+    ).pipe(
+      tap(() => {
+        // Limpiar el cache para que se recarguen los datos actualizados
+        this.matchesCache.delete(tournamentId);
+      })
+    );
+  }
 }

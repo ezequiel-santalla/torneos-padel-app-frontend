@@ -5,13 +5,12 @@ import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { SearchInputComponent } from '../../../shared/components/search-input/search-input.component';
 import { TournamentListComponent } from './tournament-list/tournament-list.component';
 import { PaginationComponent } from "../../../shared/components/pagination/pagination.component";
-import { ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { PaginationService } from '../../../shared/components/pagination/pagination.service';
 
 @Component({
   selector: 'app-tournament-list-page',
-  imports: [SearchInputComponent, TournamentListComponent, PaginationComponent],
+  imports: [SearchInputComponent, TournamentListComponent, PaginationComponent, RouterLink],
   templateUrl: './tournament-list-page.component.html',
 })
 export class TournamentListPageComponent {
@@ -30,7 +29,7 @@ export class TournamentListPageComponent {
     }),
     stream: ({ params }) => {
       return this.tournamentService.getAll({
-        size: 8,
+        size: 3,
         page: params.page,
       });
     }

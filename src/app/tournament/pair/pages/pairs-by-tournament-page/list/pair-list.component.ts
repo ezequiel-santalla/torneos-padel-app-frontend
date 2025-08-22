@@ -1,4 +1,4 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 import { Pair } from '../../../interfaces/pair.interface';
 import { RouterLink } from '@angular/router';
 
@@ -12,9 +12,14 @@ export class PairListComponent {
   pairs = input.required<Pair[]>();
   errorMessage = input<string | null>();
   isLoading = input<boolean>(false);
+  deletePairInTournament = output<string>();
 
   isEmpty = computed(() => this.pairs().length === 0);
   shouldShowList = computed(() =>
     !this.isLoading() && !this.errorMessage() && !this.isEmpty()
   );
+
+  onDeletePairInTournament(pairId: string) {
+    this.deletePairInTournament.emit(pairId);
+  }
 }

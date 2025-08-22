@@ -1,10 +1,5 @@
-<div class="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center mt-2">
+<div class="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center mt-8 mx-6">
   <search-input (value)="query.set($event)" placeholder="Buscar jugador por nombre" class="flex-1" />
-
-  <button [routerLink]="['/players/create']" class="btn btn-primary">
-    <plus-icon />
-    Agregar Jugador
-  </button>
 </div>
 
 <player-list

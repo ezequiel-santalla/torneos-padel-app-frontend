@@ -22,4 +22,8 @@ export class PairService {
       tap(pairs => this.pairsCache.set(tournamentId, pairs))
     );
   }
+
+  deletePairInTournament(tournamentId: string, pairId: string): Observable<void> {
+    return this.http.delete<void>(`${TOURNAMENT_URLS.TOURNAMENTS}/${tournamentId}/pairs/${pairId}`);
+  }
 }

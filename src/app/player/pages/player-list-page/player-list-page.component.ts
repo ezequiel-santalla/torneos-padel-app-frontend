@@ -5,14 +5,12 @@ import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { SearchInputComponent } from '../../../shared/components/search-input/search-input.component';
 import { PlayerListComponent } from './player-list/player-list.component';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { PlusIconComponent } from "../../../icons/plus-icon/plus-icon.component";
-import { map } from 'rxjs';
 import { PaginationComponent } from "../../../shared/components/pagination/pagination.component";
 import { PaginationService } from '../../../shared/components/pagination/pagination.service';
 
 @Component({
   selector: 'app-player-list-page',
-  imports: [SearchInputComponent, PlayerListComponent, RouterLink, PlusIconComponent, PaginationComponent],
+  imports: [SearchInputComponent, PlayerListComponent, PaginationComponent],
   templateUrl: './player-list-page.component.html',
 })
 export class PlayerListPageComponent {

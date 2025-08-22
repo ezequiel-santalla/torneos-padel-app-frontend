@@ -2,91 +2,112 @@
   <div class="max-w-8xl mx-auto">
     <h2 class="text-3xl font-bold mb-6 text-center">Todos los Torneos</h2>
 
-    <div class="overflow-x-auto">
-      <table class="table table-zebra w-full">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Nombre</th>
-            <th>Tipo Torneo</th>
-            <th>Categoría</th>
-            <th>Género</th>
-            <th>Modalidad</th>
-            <th>Fecha Inicio</th>
-            <th>Fecha Fin</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (tournament of tournaments(); track tournament.id; let i = $index) {
-            <tr>
-              <th>{{ i + 1 }}</th>
-              <td>{{ tournament.name }}</td>
-              <td>{{ tournament.tournamentType | enumLabel:'tournamentType' }}</td>
-              <td>{{ tournament.categoryType | enumLabel:'category' }}</td>
-              <td>{{ tournament.genderType | enumLabel:'gender' }}</td>
-              <td>{{ tournament.winningMatchRule | enumLabel:'winningMatchRule' }}</td>
-              <td>{{ tournament.startDate | date: 'yyyy-MM-dd' }}</td>
-              <td>{{ tournament.endDate| date: 'yyyy-MM-dd' }}</td>
-              <td>
-                <span
-                  class="badge"
-                  [class.badge-success]="tournament.status.value"
-                  [class.badge-neutral]="tournament.status.value">
-                  {{ tournament.status | enumLabel:'tournamentStatus' }}
-                </span>
-              </td>
-              <td class="flex gap-2">
-                <button [routerLink]="['/tournaments', tournament.id]" class="btn btn-sm btn-info">Ver</button>
-                <button [routerLink]="['/tournaments', tournament.id, 'edit']" class="btn btn-sm btn-warning">Editar</button>
-                <button
-                  class="btn btn-sm btn-error"
-                  (click)="onDeleteTournament(tournament.id)"
-                  [disabled]="isLoading()">
-                  Eliminar
-                </button>
-              </td>
-            </tr>
-          } @empty {
-            @if (isLoading()) {
-              <tr>
-                <td colspan="10" class="text-center py-8">
-                  <span class="loading loading-spinner loading-lg text-primary"></span>
-                  <div class="mt-2">Cargando...</div>
-                </td>
-              </tr>
-            } @else if (errorMessage()) {
-              <tr>
-                <td colspan="10" class="text-center py-8 text-error">
-                  <div class="flex flex-col items-center gap-2">
-                    <svg class="w-12 h-12 text-error" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 15.5c-.77.833.192 2.5 1.732 2.5z">
-                      </path>
-                    </svg>
-                    <span>Error al cargar los torneos</span>
-                  </div>
-                </td>
-              </tr>
-            } @else {
-              <tr>
-                <td colspan="10" class="text-center py-8">
-                  <div class="flex flex-col items-center gap-2 text-base-content/60">
-                    <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2 2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4">
-                      </path>
-                    </svg>
-                    <span class="text-lg font-medium">No se encontraron torneos</span>
-                    <span class="text-sm">Aún no hay torneos registrados en el sistema</span>
-                  </div>
-                </td>
-              </tr>
-            }
-          }
-        </tbody>
-      </table>
+    <!-- Grid de Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      @for (tournament of tournaments(); track tournament.id; let i = $index) {
+        <div class="card bg-base-100 shadow-lg hover:shadow-xl transition-all duration-300 border border-base-300">
+          <div class="card-body p-6">
+            <!-- Header de la card -->
+            <div class="flex justify-between items-start mb-4">
+              <h3 class="card-title text-lg font-bold text-primary line-clamp-2 flex-1 pr-2">
+                {{ tournament.name }}
+              </h3>
+              <span class="badge shrink-0"
+                    [class.badge-success]="tournament.status.value"
+                    [class.badge-neutral]="!tournament.status.value">
+                {{ tournament.status | enumLabel:'tournamentStatus' }}
+              </span>
+            </div>
+
+            <!-- Información del torneo -->
+            <div class="space-y-3 mb-6">
+              <div class="flex items-center gap-2">
+                <div class="w-2 h-2 bg-primary rounded-full shrink-0"></div>
+                <span class="text-sm text-base-content/70 shrink-0">Tipo:</span>
+                <span class="text-sm font-medium truncate">{{ tournament.tournamentType | enumLabel:'tournamentType' }}</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <div class="w-2 h-2 bg-secondary rounded-full shrink-0"></div>
+                <span class="text-sm text-base-content/70 shrink-0">Categoría:</span>
+                <span class="text-sm font-medium truncate">{{ tournament.categoryType | enumLabel:'category' }}</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <div class="w-2 h-2 bg-accent rounded-full shrink-0"></div>
+                <span class="text-sm text-base-content/70 shrink-0">Género:</span>
+                <span class="text-sm font-medium truncate">{{ tournament.genderType | enumLabel:'gender' }}</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <div class="w-2 h-2 bg-info rounded-full shrink-0"></div>
+                <span class="text-sm text-base-content/70 shrink-0">Modalidad:</span>
+                <span class="text-sm font-medium truncate">{{ tournament.winningMatchRule | enumLabel:'winningMatchRule' }}</span>
+              </div>
+            </div>
+
+            <!-- Fechas -->
+            <div class="divider my-4"></div>
+            <div class="flex justify-between text-sm text-base-content/60 mb-4">
+              <div class="text-left">
+                <span class="font-medium block">Inicio:</span>
+                <div class="text-base-content">{{ tournament.startDate | date: 'yyyy-MM-dd' }}</div>
+              </div>
+              <div class="text-right">
+                <span class="font-medium block">Fin:</span>
+                <div class="text-base-content">{{ tournament.endDate | date: 'yyyy-MM-dd' }}</div>
+              </div>
+            </div>
+
+            <!-- Acciones -->
+            <div class="card-actions justify-between gap-1">
+              <button
+                [routerLink]="['/tournaments', tournament.id]"
+                class="btn btn-info btn-sm flex-1">
+                Ver
+              </button>
+              <button
+                [routerLink]="['/tournaments', tournament.id, 'edit']"
+                class="btn btn-warning btn-sm flex-1">
+                Editar
+              </button>
+              <button
+                class="btn btn-error btn-sm flex-1"
+                (click)="onDeleteTournament(tournament.id)"
+                [disabled]="isLoading()">
+                Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+      } @empty {
+        @if (isLoading()) {
+          <div class="col-span-full text-center py-8">
+            <span class="loading loading-spinner loading-lg text-primary"></span>
+            <div class="mt-2">Cargando...</div>
+          </div>
+        } @else if (errorMessage()) {
+          <div class="col-span-full text-center py-8 text-error">
+            <div class="flex flex-col items-center gap-2">
+              <svg class="w-12 h-12 text-error" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 15.5c-.77.833.192 2.5 1.732 2.5z">
+                </path>
+              </svg>
+              <span>Error al cargar los torneos</span>
+            </div>
+          </div>
+        } @else {
+          <div class="col-span-full text-center py-8">
+            <div class="flex flex-col items-center gap-2 text-base-content/60">
+              <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2 2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4">
+                </path>
+              </svg>
+              <span class="text-lg font-medium">No se encontraron torneos</span>
+              <span class="text-sm">Aún no hay torneos registrados en el sistema</span>
+            </div>
+          </div>
+        }
+      }
     </div>
   </div>
 </section>

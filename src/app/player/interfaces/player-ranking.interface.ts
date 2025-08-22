@@ -10,6 +10,7 @@ export interface PlayerRanking {
   name:              string;
   lastName:          string;
   genderType:        string;
+  position:          number;
   totalPoints:       number;
   tournamentsPlayed: number;
 }

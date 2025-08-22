@@ -1,6 +1,7 @@
 <section class="p-6 bg-base-100 text-base-content">
-  <div class="max-w-6xl mx-auto">
-    <h2 class="text-3xl font-bold mb-6 text-center">Parejas del Torneo</h2>
+  <div class="max-w-6xl mx-auto mt-4">
+    <h2 class="text-3xl font-bold mb-2 text-center">Parejas del Torneo</h2>
+    <p class="text-center text-base-content/60 mb-6">{{ pairs().length }} parejas registradas</p>
 
     <div class="overflow-x-auto">
       <table class="table table-zebra w-full">
@@ -24,7 +25,12 @@
             </td>
             <td class="flex gap-2">
               <button [routerLink]="['edit', pair.id]" class="btn btn-sm btn-warning">Editar</button>
-              <button class="btn btn-sm btn-error">Eliminar</button>
+              <button
+                class="btn btn-error btn-sm"
+                (click)="onDeletePairInTournament(pair.id)"
+                [disabled]="isLoading()">
+                Eliminar
+              </button>
             </td>
           </tr>
           } @empty {

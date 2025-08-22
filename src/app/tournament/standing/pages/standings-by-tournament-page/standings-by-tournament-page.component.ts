@@ -1,7 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
 import { StandingService } from '../../services/standing.service';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { StandingListComponent } from '../../components/list/standing-list/standing-list.component';
+import { StandingListComponent } from './standing-list/standing-list.component';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { TournamentService } from '../../../services/tournament.service';
