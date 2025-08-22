@@ -1,4 +1,4 @@
-const BASE = 'http://localhost:8080/api/v1';
+const BASE = 'https://torneos-padel-app-backend.onrender.com/api/v1';
 
 export const AUTH_URLS = {
   LOGIN: `${BASE}/auth/login`,
