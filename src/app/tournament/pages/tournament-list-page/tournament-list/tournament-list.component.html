@@ -57,13 +57,13 @@
             </div>
 
             <!-- Acciones -->
-            <div class="card-actions justify-between gap-1">
+            <div class="card-actions justify-center">
               <button
                 [routerLink]="['/tournaments', tournament.id]"
-                class="btn btn-info btn-sm flex-1">
+                class="btn btn-info btn-sm px-6">
                 Ver
               </button>
-              <button
+              <!-- <button
                 [routerLink]="['/tournaments', tournament.id, 'edit']"
                 class="btn btn-warning btn-sm flex-1">
                 Editar
@@ -73,7 +73,7 @@
                 (click)="onDeleteTournament(tournament.id)"
                 [disabled]="isLoading()">
                 Eliminar
-              </button>
+              </button> -->
             </div>
           </div>
         </div>

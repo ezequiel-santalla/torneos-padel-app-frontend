@@ -1,4 +1,3 @@
-import { EnumOption } from "../../enum/interfaces/enum.interface";
 import { Pagination, PaginationOptions } from '../../shared/interfaces/pagination.interface';
 
 export interface PlayersResponse {

@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Player, PlayerOptions, PlayersResponse } from '../interfaces/player.interface';
-import { delay, Observable, of, tap } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { PLAYER_URLS } from '../../constants/api.constants';
+import { PlayersSummaryResponse } from '../interfaces/player-summary.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +12,10 @@ export class PlayerService {
 
   private http = inject(HttpClient);
 
-  private playersCache = new Map<string, PlayersResponse>();
+  private playersCache = new Map<string, PlayersSummaryResponse>();
   private playerCache = new Map<string, Player>();
 
-  getAll(options: PlayerOptions): Observable<PlayersResponse> {
+  getAll(options: PlayerOptions): Observable<PlayersSummaryResponse> {
     const { size = 8, page = 0 } = options;
 
     const key = `players-${page}-${size}`;
@@ -23,7 +24,7 @@ export class PlayerService {
       return of(this.playersCache.get(key)!);
     }
 
-    return this.http.get<PlayersResponse>(PLAYER_URLS.PLAYERS, {
+    return this.http.get<PlayersSummaryResponse>(PLAYER_URLS.PLAYERS, {
       params: {
         size: size,
         page: page

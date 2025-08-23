@@ -1,55 +1,79 @@
-<section class="p-6 bg-base-100 text-base-content">
-  <div class="max-w-6xl mx-auto mt-4">
-    <h2 class="text-3xl font-bold mb-2 text-center">Parejas del Torneo</h2>
+<section class="p-4 bg-base-100 text-base-content">
+  <div class="max-w-5xl mx-auto mt-4">
+    <h2 class="text-2xl font-bold mb-2 text-center">Parejas del Torneo</h2>
     <p class="text-center text-base-content/60 mb-6">{{ pairs().length }} parejas registradas</p>
 
-    <div class="overflow-x-auto">
-      <table class="table table-zebra w-full">
+    <div class="overflow-x-auto shadow-lg rounded-lg">
+      <table class="table table-compact table-zebra w-full">
         <thead>
-          <tr>
-            <th>#</th>
+          <tr class="bg-primary text-primary-content">
+            <th class="w-16">#</th>
             <th>Nombre del Equipo</th>
             <th>Jugadoras</th>
-            <th>Acciones</th>
+            <!-- <th class="w-32">Acciones</th> -->
           </tr>
         </thead>
         <tbody>
           @for (pair of pairs(); track pair.id; let i = $index) {
           <tr>
-            <th>{{ i + 1 }}</th>
-            <td class="font-semibold">{{ pair.teamName }}</td>
+            <th class="text-sm">{{ i + 1 }}</th>
             <td>
-              {{ pair.player1.name }} {{ pair.player1.lastName }}
-              <span class="text-primary font-bold px-2">—</span>
-              {{ pair.player2.name }} {{ pair.player2.lastName }}
+              <span class="font-semibold">{{ pair.teamName }}</span>
             </td>
-            <td class="flex gap-2">
-              <button [routerLink]="['edit', pair.id]" class="btn btn-sm btn-warning">Editar</button>
-              <button
-                class="btn btn-error btn-sm"
-                (click)="onDeletePairInTournament(pair.id)"
-                [disabled]="isLoading()">
-                Eliminar
-              </button>
+            <td>
+              <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
+                <span class="font-medium">{{ pair.player1.name }} {{ pair.player1.lastName }}</span>
+                <div class="hidden sm:flex items-center">
+                  <div class="w-3 h-px bg-gradient-to-r from-primary to-secondary"></div>
+                </div>
+                <span class="font-medium">{{ pair.player2.name }} {{ pair.player2.lastName }}</span>
+              </div>
             </td>
+            <!-- <td>
+              <div class="flex gap-1">
+                <button [routerLink]="['edit', pair.id]" class="btn btn-xs btn-warning">Editar</button>
+                <button
+                  class="btn btn-xs btn-error"
+                  (click)="onDeletePairInTournament(pair.id)"
+                  [disabled]="isLoading()">
+                  Eliminar
+                </button>
+              </div>
+            </td> -->
           </tr>
           } @empty {
           @if (isLoading()) {
           <tr>
-            <td colspan="4" class="text-center">
-              <span class="loading loading-spinner loading-lg text-primary">Cargando...</span>
+            <td colspan="3" class="text-center py-8">
+              <div class="flex flex-col items-center gap-2">
+                <span class="loading loading-spinner loading-lg text-primary"></span>
+                <span class="text-base-content/60">Cargando parejas...</span>
+              </div>
             </td>
           </tr>
           } @else if (errorMessage()) {
           <tr>
-            <td colspan="4" class="text-center text-error">
-              Error al cargar las parejas.
+            <td colspan="3" class="text-center py-8 text-error">
+              <div class="flex flex-col items-center gap-2">
+                <svg class="w-12 h-12 text-error" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 15.5c-.77.833.192 2.5 1.732 2.5z">
+                  </path>
+                </svg>
+                <span>Error al cargar las parejas</span>
+              </div>
             </td>
           </tr>
           } @else {
           <tr>
-            <td colspan="4" class="text-center">
-              No se encontraron parejas.
+            <td colspan="3" class="text-center py-8">
+              <div class="flex flex-col items-center gap-2 text-base-content/60">
+                <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+                  </path>
+                </svg>
+                <span class="text-lg font-medium">No se encontraron parejas</span>
+                <span class="text-sm">Aún no hay parejas registradas en este torneo</span>
+              </div>
             </td>
           </tr>
           }

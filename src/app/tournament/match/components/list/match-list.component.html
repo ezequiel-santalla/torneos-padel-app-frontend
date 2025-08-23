@@ -10,7 +10,7 @@
           <div class="flex-1 text-center sm:text-left" [class.font-bold]="match.pair1Score > match.pair2Score">
             <p class="flex items-center justify-center sm:justify-start gap-2">
               <span>{{ match.pair1.player1.name }} {{ match.pair1.player1.lastName }} <span class="text-primary">-</span>
-                    {{ match.pair1.player2.name }} {{ match.pair1.player2.lastName }}</span>
+                {{ match.pair1.player2.name }} {{ match.pair1.player2.lastName }}</span>
               @if(match.pair1Score > match.pair2Score) {
                 <span class="text-green-500">✅</span>
               }
@@ -19,46 +19,45 @@
 
           <!-- Resultado -->
           <div class="flex items-center gap-2">
-            @if (editingMatchId() === match.id) {
-              <!-- Modo edición -->
-              <input
-                type="number"
-                class="input input-sm input-bordered w-16 text-center"
-                [(ngModel)]="tempScores().pair1Score"
-                min="0"
-              />
-              <span class="px-2">–</span>
-              <input
-                type="number"
-                class="input input-sm input-bordered w-16 text-center"
-                [(ngModel)]="tempScores().pair2Score"
-                min="0"
-              />
-              <button
-                class="btn btn-sm btn-success"
-                (click)="saveResult(match)"
-                [disabled]="isUpdating()"
-              >
-                @if (isUpdating()) {
-                  <span class="loading loading-spinner loading-xs"></span>
-                } @else {
-                  ✓
-                }
-              </button>
-            } @else {
-              <!-- Modo vista -->
-              <div class="text-xl font-bold text-primary cursor-pointer hover:bg-base-300 px-2 py-1 rounded"
-                   (click)="startEdit(match)">
-                {{ match.pair1Score }} <span class="px-2">–</span> {{ match.pair2Score }}
-              </div>
-            }
+            <!-- @if (editingMatchId() === match.id) {
+            <!-- Modo edición -->
+            <!-- <input
+              type="number"
+              class="input input-sm input-bordered w-16 text-center"
+              [(ngModel)]="tempScores().pair1Score"
+              min="0"
+            />
+            <span class="px-2">–</span>
+            <input
+              type="number"
+              class="input input-sm input-bordered w-16 text-center"
+              [(ngModel)]="tempScores().pair2Score"
+              min="0"
+            />
+            <button
+              class="btn btn-sm btn-success"
+              (click)="saveResult(match)"
+              [disabled]="isUpdating()"
+            >
+              @if (isUpdating()) {
+                <span class="loading loading-spinner loading-xs"></span>
+              } @else {
+                ✓
+              }
+            </button>
+            } @else { -->
+            <!-- Modo vista -->
+            <div class="text-xl font-bold text-primary">
+              {{ match.pair1Score }} <span class="px-2">–</span> {{ match.pair2Score }}
+            </div>
+            <!-- } -->
           </div>
 
           <!-- Pareja 2 -->
           <div class="flex-1 text-center sm:text-right" [class.font-bold]="match.pair2Score > match.pair1Score">
             <p class="flex items-center justify-center sm:justify-end gap-2">
               <span>{{ match.pair2.player1.name }} {{ match.pair2.player1.lastName }} <span class="text-primary">-</span>
-                    {{ match.pair2.player2.name }} {{ match.pair2.player2.lastName }}</span>
+                {{ match.pair2.player2.name }} {{ match.pair2.player2.lastName }}</span>
               @if(match.pair2Score > match.pair1Score) {
                 <span class="text-green-500">✅</span>
               }
@@ -68,7 +67,8 @@
 
         <div class="flex flex-wrap justify-between items-center mt-4 text-sm">
           <span class="badge" [class.badge-success]="match.status === 'FINISHED'"
-            [class.badge-warning]="match.status === 'SCHEDULED'" [class.badge-info]="match.status === 'IN_PROGRESS'">
+            [class.badge-warning]="match.status === 'SCHEDULED'"
+            [class.badge-info]="match.status === 'IN_PROGRESS'">
             {{ match.status | enumLabel:'matchStatus' }}
           </span>
           <span class="text-gray-500 italic">

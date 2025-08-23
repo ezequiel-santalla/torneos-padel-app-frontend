@@ -1,7 +1,7 @@
 import { Component, computed, input, output } from '@angular/core';
-import { Player } from '../../../interfaces/player.interface';
 import { RouterLink } from '@angular/router';
 import { EnumLabelPipe } from '../../../../shared/pipes/enum-label.pipe';
+import { PlayerSummary } from '../../../interfaces/player-summary.interface';
 
 @Component({
   selector: 'player-list',
@@ -10,7 +10,7 @@ import { EnumLabelPipe } from '../../../../shared/pipes/enum-label.pipe';
 })
 export class PlayerListComponent {
 
-  players = input<Player[]>([]);
+  players = input<PlayerSummary[]>([]);
   errorMessage = input<string | null>();
   isLoading = input<boolean>(false);
 
